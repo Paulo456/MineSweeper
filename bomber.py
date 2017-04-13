@@ -63,48 +63,12 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.column = column  # Столбец
         self.minefield = minefield
 
-    def find_neighbors(self):
-        x = self.row
-        y = self.column
-
-        width = len(pole_array[0])
-        height = len(pole_array)
-
-        untrimed_neighbors = get_all_neighbors(x, y)
-        self.neighbors = [i for i in untrimed_neighbors if not is_outside(i, width, height)]
-
-    def open_cell(self, event=None):
-        if self.viewed:
-            return
-
-        self.color_button()
-
-        if self.mine and not self.flag:
-            self.make_boom()
-            return
-
-        if not self.flag:
-            self.clear_buttons()
-
-    def clear_buttons(self):
-        self.button.configure(text=self.value, fg=self.clr, bg=self.bg)  # выводим в текст поля значение
-        self.viewed = True
-        if self.value == None:  # Если вокруг нет мин
-            for k in self.neighbors:
-                pole_array[k[0]][k[1]].open_cell()  # Открываем все поля вокруг
-
     def make_boom(self):
         self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
         self.viewed = True  # Говорим, что клетка раскрыта
         for q in self.minefield.mines:
             pole_array[q[0]][q[1]].open_cell()  # Я сейчас буду вскрывать ВСЕ мины
         create_losing_window()  # Вызываем окно проигрыша
-
-    def color_button(self):
-        self.clr = get_color_by_value(self.value)
-        if self.value == 0:
-            self.value = None
-            self.bg = 'lightgrey'
 
     def set_flag(self, event):
         if self.viewed:
