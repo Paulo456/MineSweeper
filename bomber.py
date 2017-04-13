@@ -178,15 +178,14 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
             j.button.bind('<Button-3>', j.setFlag)  # Установка флажка
             j.setAround()  # Функция заполнения массива self.around
 
-    initialize_mines(bombs_count, buttons)
+    initialize_mines(bombs_count)
 
     buttons[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
     window.resizable(False, False)  # запрещаем изменения размера
     window.mainloop()
 
 
-def initialize_mines(bombs_count, buttons):
-    first_button = buttons[0][0]
+def initialize_mines(bombs_count):
     create_mines(0, bombs_count)
     calculate_cell_values()
 
