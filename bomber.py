@@ -178,30 +178,26 @@ def create_game_window(high, lenght, bombs):  # получаем значени�
     window.mainloop()
 
 
-def run_game():
-    high, lenght, bombs = read_settings()
-    create_game_window(high, lenght, bombs)  # Начинаем игру, передавая кол-во полей
-
-
-def read_settings():
-    bombs = 10
-    high = 9
-    lenght = 9
-
-    if mineText.get('1.0', END) != '\n':  # Проверяем наличие текста
-        bombs = int(mineText.get('1.0', END))  # Если текст есть, то это и будет кол-во бомб
-
-    if highText.get('1.0', END) != '\n':
-        high = int(highText.get('1.0', END))
-
-    if lenghtText.get('1.0', END) != '\n':
-        lenght = int(lenghtText.get('1.0', END))
-
-    return high, lenght, bombs
-
-
 def create_main_window():
-    global mineText, highText, lenghtText
+    def run_game():
+        high, lenght, bombs = read_settings()
+        create_game_window(high, lenght, bombs)  # Начинаем игру, передавая кол-во полей
+
+    def read_settings():
+        bombs = 10
+        high = 9
+        lenght = 9
+
+        if mineText.get('1.0', END) != '\n':  # Проверяем наличие текста
+            bombs = int(mineText.get('1.0', END))  # Если текст есть, то это и будет кол-во бомб
+
+        if highText.get('1.0', END) != '\n':
+            high = int(highText.get('1.0', END))
+
+        if lenghtText.get('1.0', END) != '\n':
+            lenght = int(lenghtText.get('1.0', END))
+
+        return high, lenght, bombs
 
     window = Tk()
     window.title('Настройки')  # Пишем название окна
