@@ -119,9 +119,9 @@ def create_losing_window():
 
 
 def seter(q, around, row, column, bombs_count):  # Получаем массив полей вокруг и координаты нажатого поля
-    if q == bombs_count:  # Если кол-во установленных бомб = кол-ву заявленных
-        calculate_cell_values()
+    if q == bombs_count:
         return
+
     a = choice(buttons)  # Выбираем рандомную строку
     b = choice(a)  # Рандомное поле
     if [buttons.index(a), a.index(b)] not in mines and [buttons.index(a), a.index(b)] not in around and [
@@ -185,6 +185,7 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
 def initialize_mines(bombs_count, buttons):
     first_button = buttons[0][0]
     seter(0, first_button.around, first_button.row, first_button.column, bombs_count)
+    calculate_cell_values()
 
 
 def create_main_window():
