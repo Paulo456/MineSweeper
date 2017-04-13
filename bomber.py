@@ -176,21 +176,22 @@ def bombcounter():
         lenght = int(lenghtText.get('1.0', END))
     game(high,lenght) #Начинаем игру, передавая кол-во полей
 
-settings = Tk() #Создаем окно
-settings.title('Настройки') #Пишем название окна
-settings.geometry('200x150') #Задаем размер
-mineText = Text(settings, width = 5, height = 1) #Создаем поля для ввода текста и пояснения
-mineLabe = Label(settings, height = 1, text = 'Бомбы:')
-highText = Text(settings, width = 5, height = 1)
-highLabe = Label(settings, height = 1, text = 'Ширина:')
-lenghtText = Text(settings, width = 5, height = 1)
-lenghtLabe = Label(settings, height = 1, text = 'Высота:')
-mineBut = Button(settings, text = 'Начать:', command = bombcounter) #Создаем кнопку
-mineBut.place(x = 70, y = 90)  #Размещаем это все
-mineText.place(x = 75, y = 5)
-mineLabe.place(x = 5, y = 5)
-highText.place(x = 75, y = 30)
-highLabe.place(x = 5, y = 30)
-lenghtText.place(x = 75, y = 55)
-lenghtLabe.place(x = 5, y = 55)
-settings.mainloop() 
+if __name__ == "__main__":
+    settings = Tk() #Создаем окно
+    settings.title('Настройки') #Пишем название окна
+    settings.geometry('200x150') #Задаем размер
+    mineText = Text(settings, width = 5, height = 1) #Создаем поля для ввода текста и пояснения
+    mineLabe = Label(settings, height = 1, text = 'Бомбы:')
+    highText = Text(settings, width = 5, height = 1)
+    highLabe = Label(settings, height = 1, text = 'Ширина:')
+    lenghtText = Text(settings, width = 5, height = 1)
+    lenghtLabe = Label(settings, height = 1, text = 'Высота:')
+    mineBut = Button(settings, text = 'Начать:', command = bombcounter) #Создаем кнопку
+    mineBut.place(x = 70, y = 90)  #Размещаем это все
+    mineText.place(x = 75, y = 5)
+    mineLabe.place(x = 5, y = 5)
+    highText.place(x = 75, y = 30)
+    highLabe.place(x = 5, y = 30)
+    lenghtText.place(x = 75, y = 55)
+    lenghtLabe.place(x = 5, y = 55)
+    settings.mainloop()
