@@ -60,8 +60,8 @@ class Minefield(object):
     def initialize_mines(self):
         self.create_mines(0)
 
-    def create_mines(self, bombs_count):  # Получаем массив полей вокруг и координаты нажатого поля
-        if bombs_count == self.bombs_count:
+    def create_mines(self, bombs_paced):
+        if bombs_paced == self.bombs_count:
             return
 
         rand_row = randint(0, self.width - 1)
@@ -73,9 +73,9 @@ class Minefield(object):
         if rand_cell not in self.mines:
             # b.mine = True  # Ставим мину
             self.mines.append(rand_cell)  # Добавляем ее в массив
-            self.create_mines(bombs_count + 1)  # Вызываем установщик, сказав, что одна мина уже есть
+            self.create_mines(bombs_paced + 1)  # Вызываем установщик, сказав, что одна мина уже есть
         else:
-            self.create_mines(bombs_count)  # Вызываем установщик еще раз
+            self.create_mines(bombs_paced)  # Вызываем установщик еще раз
 
 
 class Pole(object):  # создаем Класс поля, наследуемся от Object
