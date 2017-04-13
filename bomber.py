@@ -210,11 +210,16 @@ class MinefieldWindow(object):
                 buttons_row.append(button)
             self.buttons.append(buttons_row)
 
+        self.buttons[0][0].bind('<Control-Button-1>', self.cheat_clicked)  # создаем комбинацию клавиш для быстрого решения
+
     def left_button_clicked(self, event):
         print("left button clicked", event)
 
     def right_button_clicked(self, event):
         print("Right button clicked", event)
+
+    def cheat_clicked(self, event):
+        print("Cheat is clicked")
 
     def run(self):
         self.window.mainloop()
@@ -225,15 +230,6 @@ def create_game_window(minefield):  # получаем значения
     pole_array = [[Pole(minefield, row, column) for column in range(minefield.width)] for row in
                   range(minefield.height)]  # Двумерный массив, в котором лежат поля
 
-    # for i in pole_array:  # Цикл по строкам
-    #     for j in i:  # Цикл по элементам строки
-    #         j.button.grid(column=i.index(j), row=pole_array.index(i), ipadx=7,
-    #                       ipady=1)  # Размещаем все в одной сетке при помощи grid
-    #         j.button.bind('<Button-1>', j.open_cell)  # Биндим открывание клетки
-    #         j.button.bind('<Button-3>', j.set_flag)  # Установка флажка
-    #         j.find_neighbors()  # Функция заполнения массива self.around
-
-    # pole_array[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
 
     mineWindow = MinefieldWindow(minefield)
     mineWindow.run()
