@@ -7,16 +7,18 @@ FLAG_UNKNOWN = 2
 
 
 def get_color_by_value(value):
+    if value == -1:
+        return ('red', 'red')
     if value == 0:
-        return 'yellow'
+        return ('yellow', 'lightgrey')
     if value == 1:
-        return 'green'
+        return ('green', 'lightgrey')
     if value == 2:
-        return 'blue'
+        return ('blue', 'lightgrey')
     if value == 3:
-        return 'red'
+        return ('red', 'lightgrey')
 
-    return 'purple'
+    return ('purple', 'lightgrey')
 
 
 def get_all_neighbors(x, y):
@@ -236,7 +238,7 @@ class Minefield(object):
         rand_row = randint(0, self.width - 1)
         rand_column = randint(0, self.height - 1)
 
-        rand_cell = [rand_row, rand_column]
+        rand_cell = (rand_row, rand_column)
 
         # Проверяем, что выбранное поле не выбиралось до этого
         if rand_cell not in self.mines:
@@ -247,7 +249,15 @@ class Minefield(object):
             self.create_mines(bombs_paced)  # Вызываем установщик еще раз
 
     def open_cells(self, x, y):
-        return [(x, y, 0), (x+1, y, 1), (x+2, y, 2)]
+        cell = (x, y)
+        if cell in self.mines:
+            return [(x, y, -1), ]
+        value = self.nearest_mines_count(x, y)
+        self.fields[x][y] = value
+        return [(x, y, value),]
+
+    def nearest_mines_count(self, x, y):
+        return 2
 
 
 class MinefieldWindow(object):
@@ -296,11 +306,12 @@ class MinefieldWindow(object):
     def show_opened_cells(self, opened_cells):
         for cell in opened_cells:
             x, y, value = cell
+            if value == -1:
+                value = "Ṓ"
             if value == 0:
                 value = "  "
             button = self.buttons[x][y]
-            color = get_color_by_value(value)
-            background = 'lightgrey'
+            color, background = get_color_by_value(value)
             button.configure(text=value, fg=color, bg=background)  # выводим в текст поля значение
 
 
