@@ -48,14 +48,16 @@ def is_outside(pos, width, height):
 
 
 class Minefield(object):
-    def __init__(self, width, height, bomb_counts):
+    def __init__(self, width, height, bombs_count):
         self.width = width
         self.height = height
-        self.bomb_counts = bomb_counts
+        self.bombs_count = bombs_count
+        self.mines = []
+        self.flags = []
 
 
 class Pole(object):  # создаем Класс поля, наследуемся от Object
-    def __init__(self, master, row, column):  # Инициализация поля. master - окно Tk().
+    def __init__(self, master, minefield, row, column):  # Инициализация поля. master - окно Tk().
         self.button = Button(master, text='   ')  # Создаем для нашего поля атрибут 'button'
         self.mine = False  # Переменная наличия мины в поле
         self.value = 0  # Кол-во мин вокруг
@@ -66,6 +68,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.bg = None  # Цвет фона
         self.row = row  # Строка
         self.column = column  # Столбец
+        self.minefield = minefield
 
     def find_neighbors(self):
         x = self.row
@@ -121,13 +124,13 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         if self.flag == FLAG_NOT_SET:
             self.flag = FLAG_ADDED
             self.button.configure(text='F', bg='yellow')
-            flags.append([self.row, self.column])
+            self.minefield.flags.append([self.row, self.column])
             return
 
         if self.flag == FLAG_ADDED:
             self.flag = FLAG_UNKNOWN
             self.button.configure(text='?', bg='blue')
-            flags.pop(flags.index([self.row, self.column]))
+            self.minefield.flags.pop(self.minefield.flags.index([self.row, self.column]))
             return
 
         if self.flag == FLAG_UNKNOWN:
@@ -136,7 +139,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
             return
 
     def check_completition(self):
-        if sorted(mines) == sorted(flags):
+        if sorted(mines) == sorted(self.minefield.flags):
             create_win_window()
 
 
@@ -198,10 +201,8 @@ def create_game_window(minefield):  # получаем значения
     window.title('Сапер')
     global buttons
     global mines
-    global flags
-    flags = []  # Массив, содержащий в себе места, где стоят флажки
     mines = []  # Массив, содержащий в себе места, где лежат мины
-    buttons = [[Pole(window, row, column) for column in range(minefield.width)] for row in
+    buttons = [[Pole(window, minefield, row, column) for column in range(minefield.width)] for row in
                range(minefield.height)]  # Двумерный массив, в котором лежат поля
 
     for i in buttons:  # Цикл по строкам
@@ -212,7 +213,7 @@ def create_game_window(minefield):  # получаем значения
             j.button.bind('<Button-3>', j.set_flag)  # Установка флажка
             j.find_neighbors()  # Функция заполнения массива self.around
 
-    initialize_mines(minefield.bomb_counts)
+    initialize_mines(minefield.bombs_count)
 
     buttons[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
     window.resizable(False, False)  # запрещаем изменения размера
