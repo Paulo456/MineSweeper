@@ -1,6 +1,10 @@
 from tkinter import *
 from random import choice
 
+FLAG_NOT_SET = 0
+FLAG_ADDED = 1
+FLAG_UNKNOWN = 2
+
 
 class Pole(object):  # создаем Класс поля, наследуемся от Object
     def __init__(self, master, row, column):  # Инициализация поля. master - окно Tk().
@@ -8,7 +12,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.mine = False  # Переменная наличия мины в поле
         self.value = 0  # Кол-во мин вокруг
         self.viewed = False  # Открыто/закрыто поле
-        self.flag = 0  # 0 - флага нет, 1 - флаг стоит, 2 - стоит "?"
+        self.flag = FLAG_NOT_SET
         self.around = []  # Массив, содержащий координаты соседних клеток
         self.clr = 'black'  # Цвет текста
         self.bg = None  # Цвет фона
@@ -90,16 +94,16 @@ class Pole(object):  # создаем Класс поля, наследуемс�
                     buttons[k[0]][k[1]].open_cell('<Button-1>')  # Открываем все поля вокруг
 
     def set_flag(self, event):
-        if self.flag == 0 and not self.viewed:  # Если поле не открыто и флага нет
-            self.flag = 1  # Ставим флаг
+        if self.flag == FLAG_NOT_SET and not self.viewed:  # Если поле не открыто и флага нет
+            self.flag = FLAG_ADDED  # Ставим флаг
             self.button.configure(text='F', bg='yellow')  # Выводим флаг
             flags.append([self.row, self.column])  # Добавляем в массив флагов
-        elif self.flag == 1:  # Если флаг стоим
-            self.flag = 2  # Ставим значение '?'
+        elif self.flag == FLAG_ADDED:  # Если флаг стоим
+            self.flag = FLAG_UNKNOWN  # Ставим значение '?'
             self.button.configure(text='?', bg='blue')  # Выводим его
             flags.pop(flags.index([self.row, self.column]))  # Удаляем флаг из массива флагов
-        elif self.flag == 2:  # Если вопрос
-            self.flag = 0  # Устанавливаем на отсутствие флага
+        elif self.flag == FLAG_UNKNOWN:  # Если вопрос
+            self.flag = FLAG_NOT_SET  # Устанавливаем на отсутствие флага
             self.button.configure(text='   ', bg='white')  # Выводим пустоту
         if sorted(mines) == sorted(flags) and mines != []:  # если массив флагов идентичен массиву мин
             create_win_window()  # Сообщаем о победе
