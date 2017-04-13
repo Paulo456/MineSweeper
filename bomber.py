@@ -63,13 +63,6 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.column = column  # Столбец
         self.minefield = minefield
 
-    def make_boom(self):
-        self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
-        self.viewed = True  # Говорим, что клетка раскрыта
-        for q in self.minefield.mines:
-            pole_array[q[0]][q[1]].open_cell()  # Я сейчас буду вскрывать ВСЕ мины
-        create_losing_window()  # Вызываем окно проигрыша
-
     def set_flag(self, event):
         if self.viewed:
             return
