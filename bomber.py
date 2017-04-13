@@ -205,8 +205,16 @@ class MinefieldWindow(object):
             for y in range(self.minefield.height):
                 button = Button(self.window, text='   ')
                 button.grid(column=x, row=y, ipadx=7, ipady=1)
+                button.bind('<Button-1>', self.left_button_clicked)
+                button.bind('<Button-3>', self.right_button_clicked)
                 buttons_row.append(button)
             self.buttons.append(buttons_row)
+
+    def left_button_clicked(self, event):
+        print("left button clicked", event)
+
+    def right_button_clicked(self, event):
+        print("Right button clicked", event)
 
     def run(self):
         self.window.mainloop()
