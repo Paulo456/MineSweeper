@@ -189,8 +189,8 @@ def cheat(event):
 
 
 class MinefieldWindow(object):
-    def __init__(self, minefield):
-        self.minefield = minefield
+    def __init__(self, width, height, mines):
+        self.minefield = Minefield(width, height, mines)
 
         self.window = Tk()
         self.window.title('Сапер')
@@ -279,8 +279,7 @@ class MainWindow(object):
 
     def start_game(self):
         self.validate_input()
-        minefield = Minefield(self.width, self.height, self.mines)
-        mineWindow = MinefieldWindow(minefield)
+        mineWindow = MinefieldWindow(self.width, self.height, self.mines)
         mineWindow.run()
 
 
