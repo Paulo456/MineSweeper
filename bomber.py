@@ -15,9 +15,6 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.row = row  # Строка
         self.column = column  # Столбец
 
-    def viewAround(self):
-        return self.around
-
     def setAround(self):
         if self.row == 0:
             self.around.append([self.row + 1, self.column])
@@ -130,7 +127,7 @@ def create_mines(bombs_count, max_bombs_count):  # Получаем массив
 
     # Проверяем, что выбранное поле не выбиралось до этого
     if rand_cell not in mines:
-        b.mine = True# Ставим мину
+        b.mine = True  # Ставим мину
         mines.append(rand_cell)  # Добавляем ее в массив
         create_mines(bombs_count + 1, max_bombs_count)  # Вызываем установщик, сказав, что одна мина уже есть
     else:
@@ -138,11 +135,12 @@ def create_mines(bombs_count, max_bombs_count):  # Получаем массив
 
 
 def calculate_cell_values():
-    for i in buttons:  # Шагаем по строкам
-        for j in i:  # Шагаем по полям в строке i
-            for k in j.around:  # Шагаем по полям вокруг выбранного поля j
-                if buttons[k[0]][k[1]].mine:  # Если в одном из полей k мина
-                    buttons[buttons.index(i)][i.index(j)].value += 1  # То увеличиваем значение поля j
+    for i in buttons:
+        for j in i:
+            for k in j.around:
+                # Если в одном из полей k мина, учеличиваем значение поля
+                if buttons[k[0]][k[1]].mine:
+                    buttons[buttons.index(i)][i.index(j)].value += 1
 
 
 def create_win_window():
