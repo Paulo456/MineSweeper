@@ -143,14 +143,14 @@ def cheat(event):
             buttons[t[0]][t[1]].setFlag('<Button-1>')
 
 def create_game_window(high, lenght): #получаем значения
-    root = Tk()
-    root.title('Сапер')
+    window = Tk()
+    window.title('Сапер')
     global buttons
     global mines
     global flags
     flags = [] #Массив, содержащий в себе места, где стоят флажки
     mines = [] #Массив, содержащий в себе места, где лежат мины
-    buttons = [[Pole(root,row,column) for column in range(high)] for row in range(lenght)] #Двумерный массив, в котором лежат поля
+    buttons = [[Pole(window,row,column) for column in range(high)] for row in range(lenght)] #Двумерный массив, в котором лежат поля
     for i in buttons: #Цикл по строкам
         for j in i: #Цикл по элементам строки
             j.button.grid(column = i.index(j), row = buttons.index(i), ipadx = 7, ipady = 1) #Размещаем все в одной сетке при помощи grid
@@ -158,8 +158,8 @@ def create_game_window(high, lenght): #получаем значения
             j.button.bind('<Button-3>', j.setFlag) #Установка флажка
             j.setAround() #Функция заполнения массива self.around
     buttons[0][0].button.bind('<Control-Button-1>', cheat) #создаем комбинацию клавиш для быстрого решения
-    root.resizable(False,False) #запрещаем изменения размера
-    root.mainloop()
+    window.resizable(False,False) #запрещаем изменения размера
+    window.mainloop()
 
 def bombcounter():
     global bombs
