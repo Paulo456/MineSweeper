@@ -47,6 +47,13 @@ def is_outside(pos, width, height):
     return False
 
 
+class Minefield(object):
+    def __init__(self, width, height, bomb_counts):
+        self.width = width
+        self.height = height
+        self.bomb_counts = bomb_counts
+
+
 class Pole(object):  # создаем Класс поля, наследуемся от Object
     def __init__(self, master, row, column):  # Инициализация поля. master - окно Tk().
         self.button = Button(master, text='   ')  # Создаем для нашего поля атрибут 'button'
@@ -185,7 +192,8 @@ def cheat(event):
         buttons[t[0]][t[1]].set_flag('<Button-1>')
 
 
-def create_game_window(high, lenght, bombs_count):  # получаем значения
+# high, lenght, bombs_count
+def create_game_window(minefield):  # получаем значения
     window = Tk()
     window.title('Сапер')
     global buttons
@@ -193,8 +201,8 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
     global flags
     flags = []  # Массив, содержащий в себе места, где стоят флажки
     mines = []  # Массив, содержащий в себе места, где лежат мины
-    buttons = [[Pole(window, row, column) for column in range(high)] for row in
-               range(lenght)]  # Двумерный массив, в котором лежат поля
+    buttons = [[Pole(window, row, column) for column in range(minefield.width)] for row in
+               range(minefield.height)]  # Двумерный массив, в котором лежат поля
 
     for i in buttons:  # Цикл по строкам
         for j in i:  # Цикл по элементам строки
@@ -204,7 +212,7 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
             j.button.bind('<Button-3>', j.set_flag)  # Установка флажка
             j.find_neighbors()  # Функция заполнения массива self.around
 
-    initialize_mines(bombs_count)
+    initialize_mines(minefield.bomb_counts)
 
     buttons[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
     window.resizable(False, False)  # запрещаем изменения размера
@@ -219,7 +227,8 @@ def initialize_mines(bombs_count):
 def create_main_window():
     def run_game():
         width, height, bombs_count = read_settings()
-        create_game_window(width, height, bombs_count)  # Начинаем игру, передавая кол-во полей
+        minefield = Minefield(width, height, bombs_count)
+        create_game_window(minefield)
 
     def read_settings():
         bombs_count = 10
