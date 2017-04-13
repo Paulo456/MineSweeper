@@ -79,20 +79,23 @@ class Pole(object):  # создаем Класс поля, наследуемс�
                 self.around.append([self.row - 1, self.column - 1])
 
     def open_cell(self, event):
+        if self.viewed:
+            return
+
         self.clr = get_color_by_value(self.value)
 
         if self.value == 0:
             self.value = None
             self.bg = 'lightgrey'
 
-        if self.mine and not self.viewed and not self.flag:  # Если в клетке есть мина, она еще не открыта и на ней нет флага
+        if self.mine and not self.flag:  # Если в клетке есть мина, она еще не открыта и на ней нет флага
             self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
             self.viewed = True  # Говорим, что клетка раскрыта
             for q in mines:
                 buttons[q[0]][q[1]].open_cell('<Button-1>')  # Я сейчас буду вскрывать ВСЕ мины
             create_losing_window()  # Вызываем окно проигрыша
 
-        elif not self.viewed and not self.flag:  # Если мины нет, клетка не открыта и флаг не стоит
+        elif not self.flag:  # Если мины нет, клетка не открыта и флаг не стоит
             self.button.configure(text=self.value, fg=self.clr, bg=self.bg)  # выводим в текст поля значение
             self.viewed = True
             if self.value == None:  # Если вокруг нет мин
