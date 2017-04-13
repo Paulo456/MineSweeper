@@ -224,7 +224,7 @@ class Minefield(object):
         self.mines = []
         self.flags = []
 
-        self.fields = [[None,]*width for i in range(height)]
+        self.fields = [[None, ] * width for i in range(height)]
 
         self.initialize_mines()
 
@@ -249,17 +249,36 @@ class Minefield(object):
             self.create_mines(bombs_paced)  # Вызываем установщик еще раз
 
     def open_cells(self, x, y):
-        value = self.nearest_mines_count(x, y)
-        self.fields[x][y] = value
-        return [(x, y, value),]
+        return self.check_nearest_cells(x, y)
 
     def nearest_mines_count(self, x, y):
         count = 0
         for mine in self.mines:
-            if abs(mine[0]-x) < 2:
-                if abs(mine[1]-y) < 2:
-                    count +=1
+            if abs(mine[0] - x) < 2:
+                if abs(mine[1] - y) < 2:
+                    count += 1
         return count
+
+    def check_nearest_cells(self, x, y):
+        if self.fields[x][y] != None:
+            return []
+
+        if (x, y) in self.mines:
+            value = -1
+        else:
+            value = self.nearest_mines_count(x, y)
+
+        self.fields[x][y] = value
+        result = [(x, y, value), ]
+        if value != 0:
+            return result
+
+        untrimed_neighbors = get_all_neighbors(x, y)
+        neighbors = [i for i in untrimed_neighbors if not is_outside(i, self.width, self.height)]
+        unvisited_neighbors = [i for i in neighbors if self.fields[i[0]][i[1]] == None]
+        for i in unvisited_neighbors:
+            result.extend(self.check_nearest_cells(i[0], i[1]))
+        return result
 
 
 class MinefieldWindow(object):
