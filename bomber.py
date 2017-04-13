@@ -70,23 +70,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.toggle_flag()
         self.check_completition()
 
-    def toggle_flag(self):
-        if self.flag == FLAG_NOT_SET:
-            self.flag = FLAG_ADDED
-            self.button.configure(text='F', bg='yellow')
-            self.minefield.flags.append([self.row, self.column])
-            return
 
-        if self.flag == FLAG_ADDED:
-            self.flag = FLAG_UNKNOWN
-            self.button.configure(text='?', bg='blue')
-            self.minefield.flags.pop(self.minefield.flags.index([self.row, self.column]))
-            return
-
-        if self.flag == FLAG_UNKNOWN:
-            self.flag = FLAG_NOT_SET
-            self.button.configure(text='   ', bg='white')
-            return
 
     def check_completition(self):
         if sorted(self.minefield.mines) == sorted(self.minefield.flags):
@@ -237,6 +221,29 @@ class Minefield(object):
             result.extend(self.check_nearest_cells(i[0], i[1]))
         return result
 
+    def loggle_flag(self, x, y):
+        if self.fields[x][y] != None:
+            return
+
+        flag = next((flag for flag in self.flags if flag[0]==x and flag[1]==y), None)
+        if not flag:
+            flag = [x,y,FLAG_NOT_SET]
+            self.flags.append(flag)
+
+        if flag[2] == FLAG_NOT_SET:
+            flag[2] = FLAG_ADDED
+            return flag
+
+        if flag[2] == FLAG_ADDED:
+            flag[2] = FLAG_UNKNOWN
+            return flag
+
+        flag[2] = FLAG_NOT_SET
+        self.flags.remove(flag)
+
+        return flag
+
+
 
 class MinefieldWindow(object):
     def __init__(self, width, height, mines):
@@ -277,7 +284,24 @@ class MinefieldWindow(object):
             create_losing_window()
 
     def right_button_clicked(self, event):
-        print("Right button clicked", event)
+        x_str, y_str = event.widget.name.split("x")
+        x = int(x_str)
+        y = int(y_str)
+        flag = self.minefield.loggle_flag(x,y)
+
+        button = self.buttons[flag[0]][flag[1]]
+
+        value = flag[2]
+
+        if value == FLAG_ADDED:
+            button.configure(text='F', bg='yellow')
+
+        if value == FLAG_UNKNOWN:
+            button.configure(text='?', bg='blue')
+
+        if value == FLAG_NOT_SET:
+            button.configure(text='   ', bg='white')
+
 
     def cheat_clicked(self, event):
         print("Cheat is clicked")
