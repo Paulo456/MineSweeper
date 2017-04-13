@@ -102,7 +102,7 @@ class Pole(object): #создаем Класс поля, наследуемся 
             self.flag = 0 #Устанавливаем на отсутствие флага
             self.button.configure(text = '   ', bg = 'white') #Выводим пустоту
         if sorted(mines) == sorted(flags) and mines != []: #если массив флагов идентичен массиву мин
-            winer() #Сообщаем о победе
+            create_win_window() #Сообщаем о победе
 
 def create_losing_window():
     window = Tk()
@@ -130,7 +130,7 @@ def seter(q, around,row,column): #Получаем массив полей во�
     else:
         seter(q,around,row,column) #Вызываем установщик еще раз
 
-def winer():
+def create_win_window():
     win_window = Tk()
     win_window.geometry('300x100')
     win_window.title('Вы победили!')
