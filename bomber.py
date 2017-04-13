@@ -78,7 +78,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
                 self.neighbors.append([self.row - 1, self.column + 1])
                 self.neighbors.append([self.row - 1, self.column - 1])
 
-    def open_cell(self, event):
+    def open_cell(self, event=None):
         if self.viewed:
             return
 
@@ -96,13 +96,13 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.viewed = True
         if self.value == None:  # Если вокруг нет мин
             for k in self.neighbors:
-                buttons[k[0]][k[1]].open_cell('<Button-1>')  # Открываем все поля вокруг
+                buttons[k[0]][k[1]].open_cell()  # Открываем все поля вокруг
 
     def make_boom(self):
         self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
         self.viewed = True  # Говорим, что клетка раскрыта
         for q in mines:
-            buttons[q[0]][q[1]].open_cell('<Button-1>')  # Я сейчас буду вскрывать ВСЕ мины
+            buttons[q[0]][q[1]].open_cell()  # Я сейчас буду вскрывать ВСЕ мины
         create_losing_window()  # Вызываем окно проигрыша
 
     def color_button(self):
