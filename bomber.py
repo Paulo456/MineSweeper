@@ -1,5 +1,5 @@
 from tkinter import *
-from random import choice
+from random import randint
 
 FLAG_NOT_SET = 0
 FLAG_ADDED = 1
@@ -55,6 +55,29 @@ class Minefield(object):
         self.mines = []
         self.flags = []
 
+        self.initialize_mines()
+
+    def initialize_mines(self):
+        self.create_mines(0)
+        # calculate_cell_values()
+
+    def create_mines(self, bombs_count):  # Получаем массив полей вокруг и координаты нажатого поля
+        if bombs_count == self.bombs_count:
+            return
+
+        rand_row = randint(0, self.width - 1)
+        rand_column = randint(0, self.height - 1)
+
+        rand_cell = [rand_row, rand_column]
+
+        # Проверяем, что выбранное поле не выбиралось до этого
+        if rand_cell not in self.mines:
+            # b.mine = True  # Ставим мину
+            self.mines.append(rand_cell)  # Добавляем ее в массив
+            self.create_mines(bombs_count + 1)  # Вызываем установщик, сказав, что одна мина уже есть
+        else:
+            self.create_mines(bombs_count)  # Вызываем установщик еще раз
+
 
 class Pole(object):  # создаем Класс поля, наследуемся от Object
     def __init__(self, master, minefield, row, column):  # Инициализация поля. master - окно Tk().
@@ -103,7 +126,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
     def make_boom(self):
         self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
         self.viewed = True  # Говорим, что клетка раскрыта
-        for q in mines:
+        for q in self.minefield.mines:
             buttons[q[0]][q[1]].open_cell()  # Я сейчас буду вскрывать ВСЕ мины
         create_losing_window()  # Вызываем окно проигрыша
 
@@ -139,7 +162,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
             return
 
     def check_completition(self):
-        if sorted(mines) == sorted(self.minefield.flags):
+        if sorted(self.minefield.mines) == sorted(self.minefield.flags):
             create_win_window()
 
 
@@ -149,30 +172,10 @@ def create_losing_window():
     window.geometry('300x100')
     loseLabe = Label(window, text='В следующий раз повезет больше!')
     loseLabe.pack()
-    mines = []
     window.mainloop()
 
 
-def create_mines(bombs_count, max_bombs_count):  # Получаем массив полей вокруг и координаты нажатого поля
-    if bombs_count == max_bombs_count:
-        return
-
-    a = choice(buttons)  # Выбираем рандомную строку
-    b = choice(a)  # Рандомное поле
-    rand_row = buttons.index(a)
-    rand_column = a.index(b)
-    rand_cell = [rand_row, rand_column]
-
-    # Проверяем, что выбранное поле не выбиралось до этого
-    if rand_cell not in mines:
-        b.mine = True  # Ставим мину
-        mines.append(rand_cell)  # Добавляем ее в массив
-        create_mines(bombs_count + 1, max_bombs_count)  # Вызываем установщик, сказав, что одна мина уже есть
-    else:
-        create_mines(bombs_count, max_bombs_count)  # Вызываем установщик еще раз
-
-
-def calculate_cell_values():
+def calculate_cell_values(self):
     for i in buttons:
         for j in i:
             for k in j.neighbors:
@@ -200,8 +203,6 @@ def create_game_window(minefield):  # получаем значения
     window = Tk()
     window.title('Сапер')
     global buttons
-    global mines
-    mines = []  # Массив, содержащий в себе места, где лежат мины
     buttons = [[Pole(window, minefield, row, column) for column in range(minefield.width)] for row in
                range(minefield.height)]  # Двумерный массив, в котором лежат поля
 
@@ -213,16 +214,9 @@ def create_game_window(minefield):  # получаем значения
             j.button.bind('<Button-3>', j.set_flag)  # Установка флажка
             j.find_neighbors()  # Функция заполнения массива self.around
 
-    initialize_mines(minefield.bombs_count)
-
     buttons[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
     window.resizable(False, False)  # запрещаем изменения размера
     window.mainloop()
-
-
-def initialize_mines(bombs_count):
-    create_mines(0, bombs_count)
-    calculate_cell_values()
 
 
 def create_main_window():
