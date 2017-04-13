@@ -89,7 +89,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
                 for k in self.around:
                     buttons[k[0]][k[1]].open_cell('<Button-1>')  # Открываем все поля вокруг
 
-    def setFlag(self, event):
+    def set_flag(self, event):
         if self.flag == 0 and not self.viewed:  # Если поле не открыто и флага нет
             self.flag = 1  # Ставим флаг
             self.button.configure(text='F', bg='yellow')  # Выводим флаг
@@ -154,7 +154,7 @@ def create_win_window():
 
 def cheat(event):
     for t in mines:
-        buttons[t[0]][t[1]].setFlag('<Button-1>')
+        buttons[t[0]][t[1]].set_flag('<Button-1>')
 
 
 def create_game_window(high, lenght, bombs_count):  # получаем значения
@@ -173,7 +173,7 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
             j.button.grid(column=i.index(j), row=buttons.index(i), ipadx=7,
                           ipady=1)  # Размещаем все в одной сетке при помощи grid
             j.button.bind('<Button-1>', j.open_cell)  # Биндим открывание клетки
-            j.button.bind('<Button-3>', j.setFlag)  # Установка флажка
+            j.button.bind('<Button-3>', j.set_flag)  # Установка флажка
             j.setAround()  # Функция заполнения массива self.around
 
     initialize_mines(bombs_count)
