@@ -22,9 +22,9 @@ def get_color_by_value(value):
 
 
 def get_all_neighbors(x, y):
-    top_neighbors = [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1]]
-    center_neighbors = [[x - 1, y], [x, y], [x + 1, y]]
-    bottom_neighbors = [[x - 1, y + 1], [x, y + 1], [x + 1, y + 1]]
+    top_neighbors = [(x - 1, y - 1), (x, y - 1), (x + 1, y - 1)]
+    center_neighbors = [(x - 1, y), (x, y), (x + 1, y)]
+    bottom_neighbors = [(x - 1, y + 1), (x, y + 1), (x + 1, y + 1)]
 
     result = []
     result.extend(top_neighbors)
@@ -249,9 +249,6 @@ class Minefield(object):
             self.create_mines(bombs_paced)  # Вызываем установщик еще раз
 
     def open_cells(self, x, y):
-        cell = (x, y)
-        if cell in self.mines:
-            return [(x, y, -1), ]
         value = self.nearest_mines_count(x, y)
         self.fields[x][y] = value
         return [(x, y, value),]
