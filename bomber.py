@@ -179,7 +179,7 @@ def bombcounter():
 
 def create_main_window():
     global mineText, highText, lenghtText
-    main_window = Tk()  # Создаем окно
+    main_window = Tk()
     main_window.title('Настройки')  # Пишем название окна
     main_window.geometry('200x150')  # Задаем размер
     mineText = Text(main_window, width=5, height=1)  # Создаем поля для ввода текста и пояснения
