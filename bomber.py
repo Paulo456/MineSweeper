@@ -142,7 +142,7 @@ def cheat(event):
         for t in mines:
             buttons[t[0]][t[1]].setFlag('<Button-1>')
 
-def game(high,lenght): #получаем значения
+def create_game_window(high, lenght): #получаем значения
     root = Tk()
     root.title('Сапер')
     global buttons
@@ -175,7 +175,7 @@ def bombcounter():
         lenght = 9
     else:
         lenght = int(lenghtText.get('1.0', END))
-    game(high,lenght) #Начинаем игру, передавая кол-во полей
+    create_game_window(high, lenght) #Начинаем игру, передавая кол-во полей
 
 
 def create_main_window():
