@@ -32,7 +32,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.row = row  # Строка
         self.column = column  # Столбец
 
-    def setAround(self):
+    def find_neighbors(self):
         if self.row == 0:
             self.neighbors.append([self.row + 1, self.column])
             if self.column == 0:
@@ -210,7 +210,7 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
                           ipady=1)  # Размещаем все в одной сетке при помощи grid
             j.button.bind('<Button-1>', j.open_cell)  # Биндим открывание клетки
             j.button.bind('<Button-3>', j.set_flag)  # Установка флажка
-            j.setAround()  # Функция заполнения массива self.around
+            j.find_neighbors()  # Функция заполнения массива self.around
 
     initialize_mines(bombs_count)
 
