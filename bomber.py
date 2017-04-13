@@ -119,7 +119,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
             return
 
     def check_completition(self):
-        if sorted(mines) == sorted(flags) and mines != []:
+        if sorted(mines) == sorted(flags):
             create_win_window()
 
 
