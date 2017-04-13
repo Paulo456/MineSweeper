@@ -119,8 +119,8 @@ class Pole(object):  # создаем Класс поля, наследуемс�
             return
 
     def check_completition(self):
-        if sorted(mines) == sorted(flags) and mines != []:  # если массив флагов идентичен массиву мин
-            create_win_window()  # Сообщаем о победе
+        if sorted(mines) == sorted(flags) and mines != []:
+            create_win_window()
 
 
 def create_losing_window():
