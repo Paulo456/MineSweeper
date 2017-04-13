@@ -222,6 +222,8 @@ class Minefield(object):
         self.mines = []
         self.flags = []
 
+        self.fields = [[None,]*width]*height
+
         self.initialize_mines()
 
     def initialize_mines(self):
