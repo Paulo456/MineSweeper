@@ -210,7 +210,8 @@ class MinefieldWindow(object):
                 buttons_row.append(button)
             self.buttons.append(buttons_row)
 
-        self.buttons[0][0].bind('<Control-Button-1>', self.cheat_clicked)  # создаем комбинацию клавиш для быстрого решения
+        self.buttons[0][0].bind('<Control-Button-1>',
+                                self.cheat_clicked)  # создаем комбинацию клавиш для быстрого решения
 
     def left_button_clicked(self, event):
         print("left button clicked", event)
@@ -230,52 +231,67 @@ def create_game_window(minefield):  # получаем значения
     pole_array = [[Pole(minefield, row, column) for column in range(minefield.width)] for row in
                   range(minefield.height)]  # Двумерный массив, в котором лежат поля
 
-
     mineWindow = MinefieldWindow(minefield)
     mineWindow.run()
 
 
-def create_main_window():
-    def run_game():
-        width, height, bombs_count = read_settings()
-        minefield = Minefield(width, height, bombs_count)
+class MainWindow(object):
+    def __init__(self):
+        self.width = 9
+        self.height = 9
+        self.mines = 10
+
+        self.window = Tk()
+        self.window.title('Настройки')  # Пишем название окна
+        self.window.geometry('200x150')  # Задаем размер
+
+        self.mineText = None
+        self.highText = None
+        self.lenghtText = None
+
+        self.create_ui()
+
+    def create_ui(self):
+        self.mineText = Text(self.window, width=5, height=1)  # Создаем поля для ввода текста и пояснения
+        self.mineText.place(x=75, y=5)
+
+        mineLabe = Label(self.window, height=1, text='Бомбы:')
+        mineLabe.place(x=5, y=5)
+
+        self.highText = Text(self.window, width=5, height=1)
+        self.highText.place(x=75, y=30)
+
+        highLabe = Label(self.window, height=1, text='Ширина:')
+        highLabe.place(x=5, y=30)
+
+        self.lenghtText = Text(self.window, width=5, height=1)
+        self.lenghtText.place(x=75, y=55)
+
+        lenghtLabe = Label(self.window, height=1, text='Высота:')
+        lenghtLabe.place(x=5, y=55)
+
+        self.mineBut = Button(self.window, text='Начать:', command=self.run_game)  # Создаем кнопку
+        self.mineBut.place(x=70, y=90)  # Размещаем это все
+
+    def run_game(self):
+        self.validate_input()
+        minefield = Minefield(self.width, self.height, self.mines)
         create_game_window(minefield)
 
-    def read_settings():
-        bombs_count = 10
-        width = 9
-        height = 9
+    def run(self):
+        self.window.mainloop()
 
-        if mineText.get('1.0', END) != '\n':  # Проверяем наличие текста
-            bombs_count = int(mineText.get('1.0', END))  # Если текст есть, то это и будет кол-во бомб
+    def validate_input(self):
+        if self.mineText.get('1.0', END) != '\n':  # Проверяем наличие текста
+            self.mines = int(self.mineText.get('1.0', END))  # Если текст есть, то это и будет кол-во бомб
 
-        if highText.get('1.0', END) != '\n':
-            width = int(highText.get('1.0', END))
+        if self.highText.get('1.0', END) != '\n':
+            self.width = int(self.highText.get('1.0', END))
 
-        if lenghtText.get('1.0', END) != '\n':
-            height = int(lenghtText.get('1.0', END))
-
-        return width, height, bombs_count
-
-    window = Tk()
-    window.title('Настройки')  # Пишем название окна
-    window.geometry('200x150')  # Задаем размер
-    mineText = Text(window, width=5, height=1)  # Создаем поля для ввода текста и пояснения
-    mineLabe = Label(window, height=1, text='Бомбы:')
-    highText = Text(window, width=5, height=1)
-    highLabe = Label(window, height=1, text='Ширина:')
-    lenghtText = Text(window, width=5, height=1)
-    lenghtLabe = Label(window, height=1, text='Высота:')
-    mineBut = Button(window, text='Начать:', command=run_game)  # Создаем кнопку
-    mineBut.place(x=70, y=90)  # Размещаем это все
-    mineText.place(x=75, y=5)
-    mineLabe.place(x=5, y=5)
-    highText.place(x=75, y=30)
-    highLabe.place(x=5, y=30)
-    lenghtText.place(x=75, y=55)
-    lenghtLabe.place(x=5, y=55)
-    window.mainloop()
+        if self.lenghtText.get('1.0', END) != '\n':
+            self.height = int(self.lenghtText.get('1.0', END))
 
 
 if __name__ == "__main__":
-    create_main_window()
+    window = MainWindow()
+    window.run()
