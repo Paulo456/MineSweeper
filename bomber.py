@@ -67,8 +67,6 @@ class Pole(object):  # создаем Класс поля, наследуемс�
                 self.around.append([self.row - 1, self.column - 1])
 
     def view(self, event):
-        if mines == []:  # При первом нажатии
-            seter(0, self.around, self.row, self.column, self.bombs_count)  # Устанавливаем мины
         if self.value == 0:  # Устанавливаем цвета. Можно написать и для 6,7 и 8, но у меня закончилась фантазия
             self.clr = 'yellow'
             self.value = None
@@ -166,6 +164,7 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
     mines = []  # Массив, содержащий в себе места, где лежат мины
     buttons = [[Pole(window, row, column, bombs_count) for column in range(high)] for row in
                range(lenght)]  # Двумерный массив, в котором лежат поля
+
     for i in buttons:  # Цикл по строкам
         for j in i:  # Цикл по элементам строки
             j.button.grid(column=i.index(j), row=buttons.index(i), ipadx=7,
@@ -173,9 +172,17 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
             j.button.bind('<Button-1>', j.view)  # Биндим открывание клетки
             j.button.bind('<Button-3>', j.setFlag)  # Установка флажка
             j.setAround()  # Функция заполнения массива self.around
+
+    initialize_mines(bombs_count, buttons)
+
     buttons[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
     window.resizable(False, False)  # запрещаем изменения размера
     window.mainloop()
+
+
+def initialize_mines(bombs_count, buttons):
+    first_button = buttons[0][0]
+    seter(0, first_button.around, first_button.row, first_button.column, bombs_count)  # Устанавливаем мины
 
 
 def create_main_window():
