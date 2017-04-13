@@ -279,6 +279,10 @@ class MinefieldWindow(object):
         opened_cells = self.minefield.open_cells(x, y)
         self.show_opened_cells(opened_cells)
 
+        bombs = [i for i in opened_cells if i[2] == -1]
+        if bombs:
+            create_losing_window()
+
     def right_button_clicked(self, event):
         print("Right button clicked", event)
 
