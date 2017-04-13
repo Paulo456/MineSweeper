@@ -178,13 +178,11 @@ def create_game_window(high, lenght):  # получаем значения
 
 def run_game():
     global bombs
-    high, lenght = read_settings()
+    high, lenght, bombs = read_settings()
     create_game_window(high, lenght)  # Начинаем игру, передавая кол-во полей
 
 
 def read_settings():
-    global bombs
-
     bombs = 10
     high = 9
     lenght = 9
@@ -198,7 +196,7 @@ def read_settings():
     if lenghtText.get('1.0', END) != '\n':
         lenght = int(lenghtText.get('1.0', END))
 
-    return high, lenght
+    return high, lenght, bombs
 
 
 def create_main_window():
