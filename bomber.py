@@ -244,6 +244,9 @@ class Minefield(object):
         else:
             self.create_mines(bombs_paced)  # Вызываем установщик еще раз
 
+    def open_cells(self, x, y):
+        return [(x, y, 0), ]
+
 
 class MinefieldWindow(object):
     def __init__(self, width, height, mines):
@@ -264,7 +267,7 @@ class MinefieldWindow(object):
                 button.grid(column=x, row=y, ipadx=7, ipady=1)
                 button.bind('<Button-1>', self.left_button_clicked)
                 button.bind('<Button-3>', self.right_button_clicked)
-                button.name = "%dx%d"%(x,y)
+                button.name = "%dx%d" % (x, y)
                 buttons_row.append(button)
             self.buttons.append(buttons_row)
 
@@ -272,7 +275,12 @@ class MinefieldWindow(object):
                                 self.cheat_clicked)  # создаем комбинацию клавиш для быстрого решения
 
     def left_button_clicked(self, event):
-        print("left button clicked", event.widget.name)
+        x_str, y_str = event.widget.name.split("x")
+        x = int(x_str)
+        y = int(y_str)
+
+        opened_cells = self.minefield.open_cells(x, y)
+        self.show_opened_cells(opened_cells)
 
     def right_button_clicked(self, event):
         print("Right button clicked", event)
@@ -282,6 +290,9 @@ class MinefieldWindow(object):
 
     def run(self):
         self.window.mainloop()
+
+    def show_opened_cells(self, opened_cells):
+        raise NotImplementedError()
 
 
 if __name__ == "__main__":
