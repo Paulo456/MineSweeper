@@ -226,15 +226,6 @@ class MinefieldWindow(object):
         self.window.mainloop()
 
 
-def create_game_window(minefield):  # получаем значения
-    global pole_array
-    pole_array = [[Pole(minefield, row, column) for column in range(minefield.width)] for row in
-                  range(minefield.height)]  # Двумерный массив, в котором лежат поля
-
-    mineWindow = MinefieldWindow(minefield)
-    mineWindow.run()
-
-
 class MainWindow(object):
     def __init__(self):
         self.width = 9
@@ -270,13 +261,8 @@ class MainWindow(object):
         lenghtLabe = Label(self.window, height=1, text='Высота:')
         lenghtLabe.place(x=5, y=55)
 
-        self.mineBut = Button(self.window, text='Начать:', command=self.run_game)  # Создаем кнопку
+        self.mineBut = Button(self.window, text='Начать:', command=self.start_game)  # Создаем кнопку
         self.mineBut.place(x=70, y=90)  # Размещаем это все
-
-    def run_game(self):
-        self.validate_input()
-        minefield = Minefield(self.width, self.height, self.mines)
-        create_game_window(minefield)
 
     def run(self):
         self.window.mainloop()
@@ -290,6 +276,12 @@ class MainWindow(object):
 
         if self.lenghtText.get('1.0', END) != '\n':
             self.height = int(self.lenghtText.get('1.0', END))
+
+    def start_game(self):
+        self.validate_input()
+        minefield = Minefield(self.width, self.height, self.mines)
+        mineWindow = MinefieldWindow(minefield)
+        mineWindow.run()
 
 
 if __name__ == "__main__":
