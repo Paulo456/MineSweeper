@@ -96,8 +96,8 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         x = self.row
         y = self.column
 
-        width = len(buttons[0])
-        height = len(buttons)
+        width = len(pole_array[0])
+        height = len(pole_array)
 
         untrimed_neighbors = get_all_neighbors(x, y)
         self.neighbors = [i for i in untrimed_neighbors if not is_outside(i, width, height)]
@@ -120,13 +120,13 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.viewed = True
         if self.value == None:  # Если вокруг нет мин
             for k in self.neighbors:
-                buttons[k[0]][k[1]].open_cell()  # Открываем все поля вокруг
+                pole_array[k[0]][k[1]].open_cell()  # Открываем все поля вокруг
 
     def make_boom(self):
         self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
         self.viewed = True  # Говорим, что клетка раскрыта
         for q in self.minefield.mines:
-            buttons[q[0]][q[1]].open_cell()  # Я сейчас буду вскрывать ВСЕ мины
+            pole_array[q[0]][q[1]].open_cell()  # Я сейчас буду вскрывать ВСЕ мины
         create_losing_window()  # Вызываем окно проигрыша
 
     def color_button(self):
@@ -185,26 +185,26 @@ def create_win_window():
 
 def cheat(event):
     for t in mines:
-        buttons[t[0]][t[1]].set_flag('<Button-1>')
+        pole_array[t[0]][t[1]].set_flag('<Button-1>')
 
 
 # high, lenght, bombs_count
 def create_game_window(minefield):  # получаем значения
     window = Tk()
     window.title('Сапер')
-    global buttons
-    buttons = [[Pole(window, minefield, row, column) for column in range(minefield.width)] for row in
-               range(minefield.height)]  # Двумерный массив, в котором лежат поля
+    global pole_array
+    pole_array = [[Pole(window, minefield, row, column) for column in range(minefield.width)] for row in
+                  range(minefield.height)]  # Двумерный массив, в котором лежат поля
 
-    for i in buttons:  # Цикл по строкам
+    for i in pole_array:  # Цикл по строкам
         for j in i:  # Цикл по элементам строки
-            j.button.grid(column=i.index(j), row=buttons.index(i), ipadx=7,
+            j.button.grid(column=i.index(j), row=pole_array.index(i), ipadx=7,
                           ipady=1)  # Размещаем все в одной сетке при помощи grid
             j.button.bind('<Button-1>', j.open_cell)  # Биндим открывание клетки
             j.button.bind('<Button-3>', j.set_flag)  # Установка флажка
             j.find_neighbors()  # Функция заполнения массива self.around
 
-    buttons[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
+    pole_array[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
     window.resizable(False, False)  # запрещаем изменения размера
     window.mainloop()
 
