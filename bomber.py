@@ -3,7 +3,7 @@ from random import choice
 
 
 class Pole(object):  # создаем Класс поля, наследуемся от Object
-    def __init__(self, master, row, column, bombs_count):  # Инициализация поля. master - окно Tk().
+    def __init__(self, master, row, column):  # Инициализация поля. master - окно Tk().
         self.button = Button(master, text='   ')  # Создаем для нашего поля атрибут 'button'
         self.mine = False  # Переменная наличия мины в поле
         self.value = 0  # Кол-во мин вокруг
@@ -14,8 +14,6 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.bg = None  # Цвет фона
         self.row = row  # Строка
         self.column = column  # Столбец
-
-        self.bombs_count = bombs_count
 
     def viewAround(self):
         return self.around
@@ -162,7 +160,7 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
     global flags
     flags = []  # Массив, содержащий в себе места, где стоят флажки
     mines = []  # Массив, содержащий в себе места, где лежат мины
-    buttons = [[Pole(window, row, column, bombs_count) for column in range(high)] for row in
+    buttons = [[Pole(window, row, column) for column in range(high)] for row in
                range(lenght)]  # Двумерный массив, в котором лежат поля
 
     for i in buttons:  # Цикл по строкам
@@ -182,7 +180,7 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
 
 def initialize_mines(bombs_count, buttons):
     first_button = buttons[0][0]
-    seter(0, first_button.around, first_button.row, first_button.column, bombs_count)  # Устанавливаем мины
+    seter(0, first_button.around, first_button.row, first_button.column, bombs_count)
 
 
 def create_main_window():
