@@ -179,16 +179,17 @@ def bombcounter():
 
 def create_main_window():
     global mineText, highText, lenghtText
-    main_window = Tk()
-    main_window.title('Настройки')  # Пишем название окна
-    main_window.geometry('200x150')  # Задаем размер
-    mineText = Text(main_window, width=5, height=1)  # Создаем поля для ввода текста и пояснения
-    mineLabe = Label(main_window, height=1, text='Бомбы:')
-    highText = Text(main_window, width=5, height=1)
-    highLabe = Label(main_window, height=1, text='Ширина:')
-    lenghtText = Text(main_window, width=5, height=1)
-    lenghtLabe = Label(main_window, height=1, text='Высота:')
-    mineBut = Button(main_window, text='Начать:', command=bombcounter)  # Создаем кнопку
+
+    window = Tk()
+    window.title('Настройки')  # Пишем название окна
+    window.geometry('200x150')  # Задаем размер
+    mineText = Text(window, width=5, height=1)  # Создаем поля для ввода текста и пояснения
+    mineLabe = Label(window, height=1, text='Бомбы:')
+    highText = Text(window, width=5, height=1)
+    highLabe = Label(window, height=1, text='Ширина:')
+    lenghtText = Text(window, width=5, height=1)
+    lenghtLabe = Label(window, height=1, text='Высота:')
+    mineBut = Button(window, text='Начать:', command=bombcounter)  # Создаем кнопку
     mineBut.place(x=70, y=90)  # Размещаем это все
     mineText.place(x=75, y=5)
     mineLabe.place(x=5, y=5)
@@ -196,7 +197,7 @@ def create_main_window():
     highLabe.place(x=5, y=30)
     lenghtText.place(x=75, y=55)
     lenghtLabe.place(x=5, y=55)
-    main_window.mainloop()
+    window.mainloop()
 
 
 if __name__ == "__main__":
