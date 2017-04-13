@@ -126,10 +126,12 @@ def create_mines(bombs_count, around, row, column, max_bombs_count):  # Полу
     b = choice(a)  # Рандомное поле
     rand_row = buttons.index(a)
     rand_column = a.index(b)
+    rand_cell = [rand_row, rand_column]
+
     # Проверяем, что выбранное поле не выбиралось до этого и, что не является полем на которую мы нажали (или окружающим ее полем)
-    if [rand_row, rand_column] not in mines and [rand_row, rand_column] not in around and [rand_row, rand_column] != [row, column]:
+    if rand_cell not in mines and rand_cell not in around and rand_cell != [row, column]:
         b.mine = True# Ставим мину
-        mines.append([rand_row, rand_column])  # Добавляем ее в массив
+        mines.append(rand_cell)  # Добавляем ее в массив
         create_mines(bombs_count + 1, around, row, column, max_bombs_count)  # Вызываем установщик, сказав, что одна мина уже есть
     else:
         create_mines(bombs_count, around, row, column, max_bombs_count)  # Вызываем установщик еще раз
