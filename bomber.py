@@ -257,7 +257,12 @@ class Minefield(object):
         return [(x, y, value),]
 
     def nearest_mines_count(self, x, y):
-        return 2
+        count = 0
+        for mine in self.mines:
+            if abs(mine[0]-x) < 2:
+                if abs(mine[1]-y) < 2:
+                    count +=1
+        return count
 
 
 class MinefieldWindow(object):
