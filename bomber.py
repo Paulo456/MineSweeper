@@ -178,6 +178,12 @@ def create_game_window(high, lenght):  # получаем значения
 
 def configurate_and_run_game():
     global bombs
+    high, lenght = read_settings()
+    create_game_window(high, lenght)  # Начинаем игру, передавая кол-во полей
+
+
+def read_settings():
+    global bombs
     if mineText.get('1.0', END) == '\n':  # Проверяем наличие текста
         bombs = 10  # Если текста нет, то по стандарту кол-во бомб - 10
     else:
@@ -190,7 +196,7 @@ def configurate_and_run_game():
         lenght = 9
     else:
         lenght = int(lenghtText.get('1.0', END))
-    create_game_window(high, lenght)  # Начинаем игру, передавая кол-во полей
+    return high, lenght
 
 
 def create_main_window():
