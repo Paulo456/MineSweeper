@@ -3,7 +3,7 @@ from random import choice
 
 
 class Pole(object):  # создаем Класс поля, наследуемся от Object
-    def __init__(self, master, row, column):  # Инициализация поля. master - окно Tk().
+    def __init__(self, master, row, column, bombs):  # Инициализация поля. master - окно Tk().
         self.button = Button(master, text='   ')  # Создаем для нашего поля атрибут 'button'
         self.mine = False  # Переменная наличия мины в поле
         self.value = 0  # Кол-во мин вокруг
@@ -14,6 +14,8 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.bg = None  # Цвет фона
         self.row = row  # Строка
         self.column = column  # Столбец
+
+        self.bombs = bombs
 
     def viewAround(self):
         return self.around
@@ -66,7 +68,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
 
     def view(self, event):
         if mines == []:  # При первом нажатии
-            seter(0, self.around, self.row, self.column)  # Устанавливаем мины
+            seter(0, self.around, self.row, self.column, self.bombs)  # Устанавливаем мины
         if self.value == 0:  # Устанавливаем цвета. Можно написать и для 6,7 и 8, но у меня закончилась фантазия
             self.clr = 'yellow'
             self.value = None
@@ -120,7 +122,7 @@ def create_losing_window():
     window.mainloop()
 
 
-def seter(q, around, row, column):  # Получаем массив полей вокруг и координаты нажатого поля
+def seter(q, around, row, column, bombs):  # Получаем массив полей вокруг и координаты нажатого поля
     if q == bombs:  # Если кол-во установленных бомб = кол-ву заявленных
         for i in buttons:  # Шагаем по строкам
             for j in i:  # Шагаем по полям в строке i
@@ -135,9 +137,9 @@ def seter(q, around, row, column):  # Получаем массив полей �
                                           column]:  # Проверяем, что выбранное поле не выбиралось до этого и, что не является полем на которую мы нажали (или окружающим ее полем)
         b.mine = True  # Ставим мину
         mines.append([buttons.index(a), a.index(b)])  # Добавляем ее в массив
-        seter(q + 1, around, row, column)  # Вызываем установщик, сказав, что одна мина уже есть
+        seter(q + 1, around, row, column, bombs)  # Вызываем установщик, сказав, что одна мина уже есть
     else:
-        seter(q, around, row, column)  # Вызываем установщик еще раз
+        seter(q, around, row, column, bombs)  # Вызываем установщик еще раз
 
 
 def create_win_window():
@@ -154,7 +156,7 @@ def cheat(event):
         buttons[t[0]][t[1]].setFlag('<Button-1>')
 
 
-def create_game_window(high, lenght):  # получаем значения
+def create_game_window(high, lenght, bombs):  # получаем значения
     window = Tk()
     window.title('Сапер')
     global buttons
@@ -162,7 +164,7 @@ def create_game_window(high, lenght):  # получаем значения
     global flags
     flags = []  # Массив, содержащий в себе места, где стоят флажки
     mines = []  # Массив, содержащий в себе места, где лежат мины
-    buttons = [[Pole(window, row, column) for column in range(high)] for row in
+    buttons = [[Pole(window, row, column, bombs) for column in range(high)] for row in
                range(lenght)]  # Двумерный массив, в котором лежат поля
     for i in buttons:  # Цикл по строкам
         for j in i:  # Цикл по элементам строки
@@ -177,9 +179,8 @@ def create_game_window(high, lenght):  # получаем значения
 
 
 def run_game():
-    global bombs
     high, lenght, bombs = read_settings()
-    create_game_window(high, lenght)  # Начинаем игру, передавая кол-во полей
+    create_game_window(high, lenght, bombs)  # Начинаем игру, передавая кол-во полей
 
 
 def read_settings():
