@@ -176,7 +176,7 @@ def create_game_window(high, lenght):  # получаем значения
     window.mainloop()
 
 
-def bombcounter():
+def configurate_and_run_game():
     global bombs
     if mineText.get('1.0', END) == '\n':  # Проверяем наличие текста
         bombs = 10  # Если текста нет, то по стандарту кол-во бомб - 10
@@ -205,7 +205,7 @@ def create_main_window():
     highLabe = Label(window, height=1, text='Ширина:')
     lenghtText = Text(window, width=5, height=1)
     lenghtLabe = Label(window, height=1, text='Высота:')
-    mineBut = Button(window, text='Начать:', command=bombcounter)  # Создаем кнопку
+    mineBut = Button(window, text='Начать:', command=configurate_and_run_game)  # Создаем кнопку
     mineBut.place(x=70, y=90)  # Размещаем это все
     mineText.place(x=75, y=5)
     mineLabe.place(x=5, y=5)
