@@ -130,12 +130,12 @@ def seter(q, around,row,column): #Получаем массив полей во�
         seter(q,around,row,column) #Вызываем установщик еще раз
 
 def winer():
-    winWindow = Tk()
-    winWindow.geometry('300x100')
-    winWindow.title('Вы победили!')
-    winLabe = Label(winWindow, text = 'Поздравляем!')
+    win_window = Tk()
+    win_window.geometry('300x100')
+    win_window.title('Вы победили!')
+    winLabe = Label(win_window, text = 'Поздравляем!')
     winLabe.pack()
-    winWindow.mainloop()
+    win_window.mainloop()
 
 def cheat(event):
         for t in mines:
