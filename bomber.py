@@ -264,6 +264,7 @@ class MinefieldWindow(object):
                 button.grid(column=x, row=y, ipadx=7, ipady=1)
                 button.bind('<Button-1>', self.left_button_clicked)
                 button.bind('<Button-3>', self.right_button_clicked)
+                button.name = "%dx%d"%(x,y)
                 buttons_row.append(button)
             self.buttons.append(buttons_row)
 
@@ -271,7 +272,7 @@ class MinefieldWindow(object):
                                 self.cheat_clicked)  # создаем комбинацию клавиш для быстрого решения
 
     def left_button_clicked(self, event):
-        print("left button clicked", event)
+        print("left button clicked", event.widget.name)
 
     def right_button_clicked(self, event):
         print("Right button clicked", event)
