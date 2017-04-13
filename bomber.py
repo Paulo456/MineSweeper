@@ -118,10 +118,9 @@ def create_losing_window():
     window.mainloop()
 
 
-def seter(q, around, row, column, bombs_count):  # Получаем массив полей вокруг и координаты нажатого поля
+def create_mines(q, around, row, column, bombs_count):  # Получаем массив полей вокруг и координаты нажатого поля
     if q == bombs_count:
         return
-
     a = choice(buttons)  # Выбираем рандомную строку
     b = choice(a)  # Рандомное поле
     rand_row = buttons.index(a)
@@ -130,9 +129,9 @@ def seter(q, around, row, column, bombs_count):  # Получаем массив
     if [rand_row, rand_column] not in mines and [rand_row, rand_column] not in around and [rand_row, rand_column] != [row, column]:
         b.mine = True# Ставим мину
         mines.append([rand_row, rand_column])  # Добавляем ее в массив
-        seter(q + 1, around, row, column, bombs_count)  # Вызываем установщик, сказав, что одна мина уже есть
+        create_mines(q + 1, around, row, column, bombs_count)  # Вызываем установщик, сказав, что одна мина уже есть
     else:
-        seter(q, around, row, column, bombs_count)  # Вызываем установщик еще раз
+        create_mines(q, around, row, column, bombs_count)  # Вызываем установщик еще раз
 
 
 def calculate_cell_values():
@@ -185,7 +184,7 @@ def create_game_window(high, lenght, bombs_count):  # получаем знач�
 
 def initialize_mines(bombs_count, buttons):
     first_button = buttons[0][0]
-    seter(0, first_button.around, first_button.row, first_button.column, bombs_count)
+    create_mines(0, first_button.around, first_button.row, first_button.column, bombs_count)
     calculate_cell_values()
 
 
