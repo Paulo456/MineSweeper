@@ -26,7 +26,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.value = 0  # Кол-во мин вокруг
         self.viewed = False  # Открыто/закрыто поле
         self.flag = FLAG_NOT_SET
-        self.around = []  # Массив, содержащий координаты соседних клеток
+        self.neighbors = []  # Массив, содержащий координаты соседних клеток
         self.clr = 'black'  # Цвет текста
         self.bg = None  # Цвет фона
         self.row = row  # Строка
@@ -34,49 +34,49 @@ class Pole(object):  # создаем Класс поля, наследуемс�
 
     def setAround(self):
         if self.row == 0:
-            self.around.append([self.row + 1, self.column])
+            self.neighbors.append([self.row + 1, self.column])
             if self.column == 0:
-                self.around.append([self.row, self.column + 1])
-                self.around.append([self.row + 1, self.column + 1])
+                self.neighbors.append([self.row, self.column + 1])
+                self.neighbors.append([self.row + 1, self.column + 1])
             elif self.column == len(buttons[self.row]) - 1:
-                self.around.append([self.row, self.column - 1])
-                self.around.append([self.row + 1, self.column - 1])
+                self.neighbors.append([self.row, self.column - 1])
+                self.neighbors.append([self.row + 1, self.column - 1])
             else:
-                self.around.append([self.row, self.column - 1])
-                self.around.append([self.row, self.column + 1])
-                self.around.append([self.row + 1, self.column + 1])
-                self.around.append([self.row + 1, self.column - 1])
+                self.neighbors.append([self.row, self.column - 1])
+                self.neighbors.append([self.row, self.column + 1])
+                self.neighbors.append([self.row + 1, self.column + 1])
+                self.neighbors.append([self.row + 1, self.column - 1])
         elif self.row == len(buttons) - 1:
-            self.around.append([self.row - 1, self.column])
+            self.neighbors.append([self.row - 1, self.column])
             if self.column == 0:
-                self.around.append([self.row, self.column + 1])
-                self.around.append([self.row - 1, self.column + 1])
+                self.neighbors.append([self.row, self.column + 1])
+                self.neighbors.append([self.row - 1, self.column + 1])
             elif self.column == len(buttons[self.row]) - 1:
-                self.around.append([self.row, self.column - 1])
-                self.around.append([self.row - 1, self.column - 1])
+                self.neighbors.append([self.row, self.column - 1])
+                self.neighbors.append([self.row - 1, self.column - 1])
             else:
-                self.around.append([self.row, self.column - 1])
-                self.around.append([self.row, self.column + 1])
-                self.around.append([self.row - 1, self.column + 1])
-                self.around.append([self.row - 1, self.column - 1])
+                self.neighbors.append([self.row, self.column - 1])
+                self.neighbors.append([self.row, self.column + 1])
+                self.neighbors.append([self.row - 1, self.column + 1])
+                self.neighbors.append([self.row - 1, self.column - 1])
         else:
-            self.around.append([self.row - 1, self.column])
-            self.around.append([self.row + 1, self.column])
+            self.neighbors.append([self.row - 1, self.column])
+            self.neighbors.append([self.row + 1, self.column])
             if self.column == 0:
-                self.around.append([self.row, self.column + 1])
-                self.around.append([self.row + 1, self.column + 1])
-                self.around.append([self.row - 1, self.column + 1])
+                self.neighbors.append([self.row, self.column + 1])
+                self.neighbors.append([self.row + 1, self.column + 1])
+                self.neighbors.append([self.row - 1, self.column + 1])
             elif self.column == len(buttons[self.row]) - 1:
-                self.around.append([self.row, self.column - 1])
-                self.around.append([self.row + 1, self.column - 1])
-                self.around.append([self.row - 1, self.column - 1])
+                self.neighbors.append([self.row, self.column - 1])
+                self.neighbors.append([self.row + 1, self.column - 1])
+                self.neighbors.append([self.row - 1, self.column - 1])
             else:
-                self.around.append([self.row, self.column - 1])
-                self.around.append([self.row, self.column + 1])
-                self.around.append([self.row + 1, self.column + 1])
-                self.around.append([self.row + 1, self.column - 1])
-                self.around.append([self.row - 1, self.column + 1])
-                self.around.append([self.row - 1, self.column - 1])
+                self.neighbors.append([self.row, self.column - 1])
+                self.neighbors.append([self.row, self.column + 1])
+                self.neighbors.append([self.row + 1, self.column + 1])
+                self.neighbors.append([self.row + 1, self.column - 1])
+                self.neighbors.append([self.row - 1, self.column + 1])
+                self.neighbors.append([self.row - 1, self.column - 1])
 
     def open_cell(self, event):
         if self.viewed:
@@ -95,7 +95,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.button.configure(text=self.value, fg=self.clr, bg=self.bg)  # выводим в текст поля значение
         self.viewed = True
         if self.value == None:  # Если вокруг нет мин
-            for k in self.around:
+            for k in self.neighbors:
                 buttons[k[0]][k[1]].open_cell('<Button-1>')  # Открываем все поля вокруг
 
     def make_boom(self):
@@ -173,7 +173,7 @@ def create_mines(bombs_count, max_bombs_count):  # Получаем массив
 def calculate_cell_values():
     for i in buttons:
         for j in i:
-            for k in j.around:
+            for k in j.neighbors:
                 # Если в одном из полей k мина, учеличиваем значение поля
                 if buttons[k[0]][k[1]].mine:
                     buttons[buttons.index(i)][i.index(j)].value += 1
