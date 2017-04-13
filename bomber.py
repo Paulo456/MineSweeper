@@ -47,37 +47,6 @@ def is_outside(pos, width, height):
     return False
 
 
-class Minefield(object):
-    def __init__(self, width, height, bombs_count):
-        self.width = width
-        self.height = height
-        self.bombs_count = bombs_count
-        self.mines = []
-        self.flags = []
-
-        self.initialize_mines()
-
-    def initialize_mines(self):
-        self.create_mines(0)
-
-    def create_mines(self, bombs_paced):
-        if bombs_paced == self.bombs_count:
-            return
-
-        rand_row = randint(0, self.width - 1)
-        rand_column = randint(0, self.height - 1)
-
-        rand_cell = [rand_row, rand_column]
-
-        # Проверяем, что выбранное поле не выбиралось до этого
-        if rand_cell not in self.mines:
-            # b.mine = True  # Ставим мину
-            self.mines.append(rand_cell)  # Добавляем ее в массив
-            self.create_mines(bombs_paced + 1)  # Вызываем установщик, сказав, что одна мина уже есть
-        else:
-            self.create_mines(bombs_paced)  # Вызываем установщик еще раз
-
-
 class Pole(object):  # создаем Класс поля, наследуемся от Object
     def __init__(self, minefield, row, column):  # Инициализация поля. master - окно Tk().
         # self.button = Button(master, text='   ')  # Создаем для нашего поля атрибут 'button'
@@ -188,44 +157,6 @@ def cheat(event):
         pole_array[t[0]][t[1]].set_flag('<Button-1>')
 
 
-class MinefieldWindow(object):
-    def __init__(self, width, height, mines):
-        self.minefield = Minefield(width, height, mines)
-
-        self.window = Tk()
-        self.window.title('Сапер')
-        self.window.resizable(False, False)  # запрещаем изменения размера
-
-        self.buttons = []
-        self.create_ui();
-
-    def create_ui(self):
-        for x in range(self.minefield.width):
-            buttons_row = []
-            for y in range(self.minefield.height):
-                button = Button(self.window, text='   ')
-                button.grid(column=x, row=y, ipadx=7, ipady=1)
-                button.bind('<Button-1>', self.left_button_clicked)
-                button.bind('<Button-3>', self.right_button_clicked)
-                buttons_row.append(button)
-            self.buttons.append(buttons_row)
-
-        self.buttons[0][0].bind('<Control-Button-1>',
-                                self.cheat_clicked)  # создаем комбинацию клавиш для быстрого решения
-
-    def left_button_clicked(self, event):
-        print("left button clicked", event)
-
-    def right_button_clicked(self, event):
-        print("Right button clicked", event)
-
-    def cheat_clicked(self, event):
-        print("Cheat is clicked")
-
-    def run(self):
-        self.window.mainloop()
-
-
 class MainWindow(object):
     def __init__(self):
         self.width = 9
@@ -281,6 +212,75 @@ class MainWindow(object):
         self.validate_input()
         mineWindow = MinefieldWindow(self.width, self.height, self.mines)
         mineWindow.run()
+
+
+class Minefield(object):
+    def __init__(self, width, height, bombs_count):
+        self.width = width
+        self.height = height
+        self.bombs_count = bombs_count
+        self.mines = []
+        self.flags = []
+
+        self.initialize_mines()
+
+    def initialize_mines(self):
+        self.create_mines(0)
+
+    def create_mines(self, bombs_paced):
+        if bombs_paced == self.bombs_count:
+            return
+
+        rand_row = randint(0, self.width - 1)
+        rand_column = randint(0, self.height - 1)
+
+        rand_cell = [rand_row, rand_column]
+
+        # Проверяем, что выбранное поле не выбиралось до этого
+        if rand_cell not in self.mines:
+            # b.mine = True  # Ставим мину
+            self.mines.append(rand_cell)  # Добавляем ее в массив
+            self.create_mines(bombs_paced + 1)  # Вызываем установщик, сказав, что одна мина уже есть
+        else:
+            self.create_mines(bombs_paced)  # Вызываем установщик еще раз
+
+
+class MinefieldWindow(object):
+    def __init__(self, width, height, mines):
+        self.minefield = Minefield(width, height, mines)
+
+        self.window = Tk()
+        self.window.title('Сапер')
+        self.window.resizable(False, False)  # запрещаем изменения размера
+
+        self.buttons = []
+        self.create_ui()
+
+    def create_ui(self):
+        for x in range(self.minefield.width):
+            buttons_row = []
+            for y in range(self.minefield.height):
+                button = Button(self.window, text='   ')
+                button.grid(column=x, row=y, ipadx=7, ipady=1)
+                button.bind('<Button-1>', self.left_button_clicked)
+                button.bind('<Button-3>', self.right_button_clicked)
+                buttons_row.append(button)
+            self.buttons.append(buttons_row)
+
+        self.buttons[0][0].bind('<Control-Button-1>',
+                                self.cheat_clicked)  # создаем комбинацию клавиш для быстрого решения
+
+    def left_button_clicked(self, event):
+        print("left button clicked", event)
+
+    def right_button_clicked(self, event):
+        print("Right button clicked", event)
+
+    def cheat_clicked(self, event):
+        print("Cheat is clicked")
+
+    def run(self):
+        self.window.mainloop()
 
 
 if __name__ == "__main__":
