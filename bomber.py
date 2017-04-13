@@ -19,6 +19,34 @@ def get_color_by_value(value):
     return 'purple'
 
 
+def get_all_neighbors(x, y):
+    top_neighbors = [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1]]
+    center_neighbors = [[x - 1, y], [x, y], [x + 1, y]]
+    bottom_neighbors = [[x - 1, y + 1], [x, y + 1], [x + 1, y + 1]]
+
+    result = []
+    result.extend(top_neighbors)
+    result.extend(center_neighbors)
+    result.extend(bottom_neighbors)
+    return result
+
+
+def is_outside(pos, width, height):
+    if pos[0] < 0:
+        return True
+
+    if pos[0] >= width:
+        return True
+
+    if pos[1] < 0:
+        return True
+
+    if pos[1] >= height:
+        return True
+
+    return False
+
+
 class Pole(object):  # создаем Класс поля, наследуемся от Object
     def __init__(self, master, row, column):  # Инициализация поля. master - окно Tk().
         self.button = Button(master, text='   ')  # Создаем для нашего поля атрибут 'button'
@@ -33,50 +61,14 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.column = column  # Столбец
 
     def find_neighbors(self):
-        if self.row == 0:
-            self.neighbors.append([self.row + 1, self.column])
-            if self.column == 0:
-                self.neighbors.append([self.row, self.column + 1])
-                self.neighbors.append([self.row + 1, self.column + 1])
-            elif self.column == len(buttons[self.row]) - 1:
-                self.neighbors.append([self.row, self.column - 1])
-                self.neighbors.append([self.row + 1, self.column - 1])
-            else:
-                self.neighbors.append([self.row, self.column - 1])
-                self.neighbors.append([self.row, self.column + 1])
-                self.neighbors.append([self.row + 1, self.column + 1])
-                self.neighbors.append([self.row + 1, self.column - 1])
-        elif self.row == len(buttons) - 1:
-            self.neighbors.append([self.row - 1, self.column])
-            if self.column == 0:
-                self.neighbors.append([self.row, self.column + 1])
-                self.neighbors.append([self.row - 1, self.column + 1])
-            elif self.column == len(buttons[self.row]) - 1:
-                self.neighbors.append([self.row, self.column - 1])
-                self.neighbors.append([self.row - 1, self.column - 1])
-            else:
-                self.neighbors.append([self.row, self.column - 1])
-                self.neighbors.append([self.row, self.column + 1])
-                self.neighbors.append([self.row - 1, self.column + 1])
-                self.neighbors.append([self.row - 1, self.column - 1])
-        else:
-            self.neighbors.append([self.row - 1, self.column])
-            self.neighbors.append([self.row + 1, self.column])
-            if self.column == 0:
-                self.neighbors.append([self.row, self.column + 1])
-                self.neighbors.append([self.row + 1, self.column + 1])
-                self.neighbors.append([self.row - 1, self.column + 1])
-            elif self.column == len(buttons[self.row]) - 1:
-                self.neighbors.append([self.row, self.column - 1])
-                self.neighbors.append([self.row + 1, self.column - 1])
-                self.neighbors.append([self.row - 1, self.column - 1])
-            else:
-                self.neighbors.append([self.row, self.column - 1])
-                self.neighbors.append([self.row, self.column + 1])
-                self.neighbors.append([self.row + 1, self.column + 1])
-                self.neighbors.append([self.row + 1, self.column - 1])
-                self.neighbors.append([self.row - 1, self.column + 1])
-                self.neighbors.append([self.row - 1, self.column - 1])
+        x = self.row
+        y = self.column
+
+        width = len(buttons[0])
+        height = len(buttons)
+
+        untrimed_neighbors = get_all_neighbors(x, y)
+        self.neighbors = [i for i in untrimed_neighbors if not is_outside(i, width, height)]
 
     def open_cell(self, event=None):
         if self.viewed:
