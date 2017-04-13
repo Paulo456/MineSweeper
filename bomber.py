@@ -82,11 +82,7 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         if self.viewed:
             return
 
-        self.clr = get_color_by_value(self.value)
-
-        if self.value == 0:
-            self.value = None
-            self.bg = 'lightgrey'
+        self.color_button()
 
         if self.mine and not self.flag:  # Если в клетке есть мина, она еще не открыта и на ней нет флага
             self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
@@ -95,12 +91,19 @@ class Pole(object):  # создаем Класс поля, наследуемс�
                 buttons[q[0]][q[1]].open_cell('<Button-1>')  # Я сейчас буду вскрывать ВСЕ мины
             create_losing_window()  # Вызываем окно проигрыша
 
+
         elif not self.flag:  # Если мины нет, клетка не открыта и флаг не стоит
             self.button.configure(text=self.value, fg=self.clr, bg=self.bg)  # выводим в текст поля значение
             self.viewed = True
             if self.value == None:  # Если вокруг нет мин
                 for k in self.around:
                     buttons[k[0]][k[1]].open_cell('<Button-1>')  # Открываем все поля вокруг
+
+    def color_button(self):
+        self.clr = get_color_by_value(self.value)
+        if self.value == 0:
+            self.value = None
+            self.bg = 'lightgrey'
 
     def set_flag(self, event):
         if self.viewed:
