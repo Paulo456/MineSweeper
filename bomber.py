@@ -6,6 +6,19 @@ FLAG_ADDED = 1
 FLAG_UNKNOWN = 2
 
 
+def get_color_by_value(value):
+    if value == 0:
+        return 'yellow'
+    if value == 1:
+        return 'green'
+    if value == 2:
+        return 'blue'
+    if value == 3:
+        return 'red'
+
+    return 'purple'
+
+
 class Pole(object):  # создаем Класс поля, наследуемся от Object
     def __init__(self, master, row, column):  # Инициализация поля. master - окно Tk().
         self.button = Button(master, text='   ')  # Создаем для нашего поля атрибут 'button'
@@ -66,18 +79,11 @@ class Pole(object):  # создаем Класс поля, наследуемс�
                 self.around.append([self.row - 1, self.column - 1])
 
     def open_cell(self, event):
-        if self.value == 0:  # Устанавливаем цвета. Можно написать и для 6,7 и 8, но у меня закончилась фантазия
-            self.clr = 'yellow'
+        self.clr = get_color_by_value(self.value)
+
+        if self.value == 0:
             self.value = None
             self.bg = 'lightgrey'
-        elif self.value == 1:
-            self.clr = 'green'
-        elif self.value == 2:
-            self.clr = 'blue'
-        elif self.value == 3:
-            self.clr = 'red'
-        elif self.value == 4:
-            self.clr = 'purple'
 
         if self.mine and not self.viewed and not self.flag:  # Если в клетке есть мина, она еще не открыта и на ней нет флага
             self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
