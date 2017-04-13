@@ -104,13 +104,13 @@ class Pole(object): #создаем Класс поля, наследуемся 
         if sorted(mines) == sorted(flags) and mines != []: #если массив флагов идентичен массиву мин
             winer() #Сообщаем о победе
 def lose():
-    loseWindow = Tk()
-    loseWindow.title('Вы проиграли:-(')
-    loseWindow.geometry('300x100')
-    loseLabe = Label(loseWindow, text = 'В следующий раз повезет больше!')
+    losing_window = Tk()
+    losing_window.title('Вы проиграли:-(')
+    losing_window.geometry('300x100')
+    loseLabe = Label(losing_window, text = 'В следующий раз повезет больше!')
     loseLabe.pack()
     mines = []
-    loseWindow.mainloop()
+    losing_window.mainloop()
 
 def seter(q, around,row,column): #Получаем массив полей вокруг и координаты нажатого поля
     if q == bombs: #Если кол-во установленных бомб = кол-ву заявленных
