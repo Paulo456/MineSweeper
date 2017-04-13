@@ -84,16 +84,19 @@ class Pole(object):  # создаем Класс поля, наследуемс�
 
         self.color_button()
 
-        if self.mine and not self.flag:  # Если в клетке есть мина, она еще не открыта и на ней нет флага
+        if self.mine and not self.flag:
             self.make_boom()
+            return
 
+        if not self.flag:
+            self.clear_buttons()
 
-        elif not self.flag:  # Если мины нет, клетка не открыта и флаг не стоит
-            self.button.configure(text=self.value, fg=self.clr, bg=self.bg)  # выводим в текст поля значение
-            self.viewed = True
-            if self.value == None:  # Если вокруг нет мин
-                for k in self.around:
-                    buttons[k[0]][k[1]].open_cell('<Button-1>')  # Открываем все поля вокруг
+    def clear_buttons(self):
+        self.button.configure(text=self.value, fg=self.clr, bg=self.bg)  # выводим в текст поля значение
+        self.viewed = True
+        if self.value == None:  # Если вокруг нет мин
+            for k in self.around:
+                buttons[k[0]][k[1]].open_cell('<Button-1>')  # Открываем все поля вокруг
 
     def make_boom(self):
         self.button.configure(text='B', bg='red')  # Показываем пользователю, что тут есть мина
