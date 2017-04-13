@@ -218,24 +218,24 @@ def initialize_mines(bombs_count):
 
 def create_main_window():
     def run_game():
-        high, lenght, bombs_count = read_settings()
-        create_game_window(high, lenght, bombs_count)  # Начинаем игру, передавая кол-во полей
+        width, height, bombs_count = read_settings()
+        create_game_window(width, height, bombs_count)  # Начинаем игру, передавая кол-во полей
 
     def read_settings():
         bombs_count = 10
-        high = 9
-        lenght = 9
+        width = 9
+        height = 9
 
         if mineText.get('1.0', END) != '\n':  # Проверяем наличие текста
             bombs_count = int(mineText.get('1.0', END))  # Если текст есть, то это и будет кол-во бомб
 
         if highText.get('1.0', END) != '\n':
-            high = int(highText.get('1.0', END))
+            width = int(highText.get('1.0', END))
 
         if lenghtText.get('1.0', END) != '\n':
-            lenght = int(lenghtText.get('1.0', END))
+            height = int(lenghtText.get('1.0', END))
 
-        return high, lenght, bombs_count
+        return width, height, bombs_count
 
     window = Tk()
     window.title('Настройки')  # Пишем название окна
