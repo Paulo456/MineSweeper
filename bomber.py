@@ -94,7 +94,10 @@ class Pole(object):  # создаем Класс поля, наследуемс�
                     buttons[k[0]][k[1]].open_cell('<Button-1>')  # Открываем все поля вокруг
 
     def set_flag(self, event):
-        if self.flag == FLAG_NOT_SET and not self.viewed:  # Если поле не открыто и флага нет
+        if self.viewed:
+            return
+
+        if self.flag == FLAG_NOT_SET:
             self.flag = FLAG_ADDED  # Ставим флаг
             self.button.configure(text='F', bg='yellow')  # Выводим флаг
             flags.append([self.row, self.column])  # Добавляем в массив флагов
