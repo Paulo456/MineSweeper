@@ -184,18 +184,20 @@ def run_game():
 
 def read_settings():
     global bombs
-    if mineText.get('1.0', END) == '\n':  # Проверяем наличие текста
-        bombs = 10  # Если текста нет, то по стандарту кол-во бомб - 10
-    else:
+
+    bombs = 10
+    high = 9
+    lenght = 9
+
+    if mineText.get('1.0', END) != '\n':  # Проверяем наличие текста
         bombs = int(mineText.get('1.0', END))  # Если текст есть, то это и будет кол-во бомб
-    if highText.get('1.0', END) == '\n':
-        high = 9
-    else:
+
+    if highText.get('1.0', END) != '\n':
         high = int(highText.get('1.0', END))
-    if lenghtText.get('1.0', END) == '\n':
-        lenght = 9
-    else:
+
+    if lenghtText.get('1.0', END) != '\n':
         lenght = int(lenghtText.get('1.0', END))
+
     return high, lenght
 
 
