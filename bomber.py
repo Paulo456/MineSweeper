@@ -124,11 +124,12 @@ def seter(q, around, row, column, bombs_count):  # Получаем массив
 
     a = choice(buttons)  # Выбираем рандомную строку
     b = choice(a)  # Рандомное поле
-    if [buttons.index(a), a.index(b)] not in mines and [buttons.index(a), a.index(b)] not in around and [
-        buttons.index(a), a.index(b)] != [row,
-                                          column]:  # Проверяем, что выбранное поле не выбиралось до этого и, что не является полем на которую мы нажали (или окружающим ее полем)
-        b.mine = True  # Ставим мину
-        mines.append([buttons.index(a), a.index(b)])  # Добавляем ее в массив
+    rand_row = buttons.index(a)
+    rand_column = a.index(b)
+    # Проверяем, что выбранное поле не выбиралось до этого и, что не является полем на которую мы нажали (или окружающим ее полем)
+    if [rand_row, rand_column] not in mines and [rand_row, rand_column] not in around and [rand_row, rand_column] != [row, column]:
+        b.mine = True# Ставим мину
+        mines.append([rand_row, rand_column])  # Добавляем ее в массив
         seter(q + 1, around, row, column, bombs_count)  # Вызываем установщик, сказав, что одна мина уже есть
     else:
         seter(q, around, row, column, bombs_count)  # Вызываем установщик еще раз
