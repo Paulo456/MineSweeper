@@ -176,7 +176,7 @@ def create_game_window(high, lenght):  # получаем значения
     window.mainloop()
 
 
-def configurate_and_run_game():
+def run_game():
     global bombs
     high, lenght = read_settings()
     create_game_window(high, lenght)  # Начинаем игру, передавая кол-во полей
@@ -211,7 +211,7 @@ def create_main_window():
     highLabe = Label(window, height=1, text='Ширина:')
     lenghtText = Text(window, width=5, height=1)
     lenghtLabe = Label(window, height=1, text='Высота:')
-    mineBut = Button(window, text='Начать:', command=configurate_and_run_game)  # Создаем кнопку
+    mineBut = Button(window, text='Начать:', command=run_game)  # Создаем кнопку
     mineBut.place(x=70, y=90)  # Размещаем это все
     mineText.place(x=75, y=5)
     mineLabe.place(x=5, y=5)
