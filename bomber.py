@@ -105,13 +105,18 @@ class Pole(object):  # создаем Класс поля, наследуемс�
             self.flag = FLAG_ADDED  # Ставим флаг
             self.button.configure(text='F', bg='yellow')  # Выводим флаг
             flags.append([self.row, self.column])  # Добавляем в массив флагов
-        elif self.flag == FLAG_ADDED:  # Если флаг стоим
+            return
+
+        if self.flag == FLAG_ADDED:  # Если флаг стоим
             self.flag = FLAG_UNKNOWN  # Ставим значение '?'
             self.button.configure(text='?', bg='blue')  # Выводим его
             flags.pop(flags.index([self.row, self.column]))  # Удаляем флаг из массива флагов
-        elif self.flag == FLAG_UNKNOWN:  # Если вопрос
+            return
+
+        if self.flag == FLAG_UNKNOWN:  # Если вопрос
             self.flag = FLAG_NOT_SET  # Устанавливаем на отсутствие флага
             self.button.configure(text='   ', bg='white')  # Выводим пустоту
+            return
 
     def check_completition(self):
         if sorted(mines) == sorted(flags) and mines != []:  # если массив флагов идентичен массиву мин
