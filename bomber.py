@@ -120,11 +120,7 @@ def create_losing_window():
 
 def seter(q, around, row, column, bombs_count):  # Получаем массив полей вокруг и координаты нажатого поля
     if q == bombs_count:  # Если кол-во установленных бомб = кол-ву заявленных
-        for i in buttons:  # Шагаем по строкам
-            for j in i:  # Шагаем по полям в строке i
-                for k in j.around:  # Шагаем по полям вокруг выбранного поля j
-                    if buttons[k[0]][k[1]].mine:  # Если в одном из полей k мина
-                        buttons[buttons.index(i)][i.index(j)].value += 1  # То увеличиваем значение поля j
+        calculate_cell_values()
         return
     a = choice(buttons)  # Выбираем рандомную строку
     b = choice(a)  # Рандомное поле
@@ -136,6 +132,14 @@ def seter(q, around, row, column, bombs_count):  # Получаем массив
         seter(q + 1, around, row, column, bombs_count)  # Вызываем установщик, сказав, что одна мина уже есть
     else:
         seter(q, around, row, column, bombs_count)  # Вызываем установщик еще раз
+
+
+def calculate_cell_values():
+    for i in buttons:  # Шагаем по строкам
+        for j in i:  # Шагаем по полям в строке i
+            for k in j.around:  # Шагаем по полям вокруг выбранного поля j
+                if buttons[k[0]][k[1]].mine:  # Если в одном из полей k мина
+                    buttons[buttons.index(i)][i.index(j)].value += 1  # То увеличиваем значение поля j
 
 
 def create_win_window():
