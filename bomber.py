@@ -102,20 +102,20 @@ class Pole(object):  # создаем Класс поля, наследуемс�
 
     def toggle_flag(self):
         if self.flag == FLAG_NOT_SET:
-            self.flag = FLAG_ADDED  # Ставим флаг
-            self.button.configure(text='F', bg='yellow')  # Выводим флаг
-            flags.append([self.row, self.column])  # Добавляем в массив флагов
+            self.flag = FLAG_ADDED
+            self.button.configure(text='F', bg='yellow')
+            flags.append([self.row, self.column])
             return
 
-        if self.flag == FLAG_ADDED:  # Если флаг стоим
-            self.flag = FLAG_UNKNOWN  # Ставим значение '?'
-            self.button.configure(text='?', bg='blue')  # Выводим его
-            flags.pop(flags.index([self.row, self.column]))  # Удаляем флаг из массива флагов
+        if self.flag == FLAG_ADDED:
+            self.flag = FLAG_UNKNOWN
+            self.button.configure(text='?', bg='blue')
+            flags.pop(flags.index([self.row, self.column]))
             return
 
-        if self.flag == FLAG_UNKNOWN:  # Если вопрос
-            self.flag = FLAG_NOT_SET  # Устанавливаем на отсутствие флага
-            self.button.configure(text='   ', bg='white')  # Выводим пустоту
+        if self.flag == FLAG_UNKNOWN:
+            self.flag = FLAG_NOT_SET
+            self.button.configure(text='   ', bg='white')
             return
 
     def check_completition(self):
