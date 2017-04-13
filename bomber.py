@@ -59,7 +59,6 @@ class Minefield(object):
 
     def initialize_mines(self):
         self.create_mines(0)
-        # calculate_cell_values()
 
     def create_mines(self, bombs_count):  # Получаем массив полей вокруг и координаты нажатого поля
         if bombs_count == self.bombs_count:
@@ -173,15 +172,6 @@ def create_losing_window():
     loseLabe = Label(window, text='В следующий раз повезет больше!')
     loseLabe.pack()
     window.mainloop()
-
-
-def calculate_cell_values(self):
-    for i in buttons:
-        for j in i:
-            for k in j.neighbors:
-                # Если в одном из полей k мина, учеличиваем значение поля
-                if buttons[k[0]][k[1]].mine:
-                    buttons[buttons.index(i)][i.index(j)].value += 1
 
 
 def create_win_window():
