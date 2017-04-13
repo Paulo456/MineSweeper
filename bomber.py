@@ -222,7 +222,7 @@ class Minefield(object):
         self.mines = []
         self.flags = []
 
-        self.fields = [[None,]*width]*height
+        self.fields = [[None, ] * width] * height
 
         self.initialize_mines()
 
@@ -247,7 +247,7 @@ class Minefield(object):
             self.create_mines(bombs_paced)  # Вызываем установщик еще раз
 
     def open_cells(self, x, y):
-        return [(x, y, 0), ]
+        return [(x, y, 0), (x+1, y, 1), (x+2, y, 2)]
 
 
 class MinefieldWindow(object):
@@ -294,7 +294,14 @@ class MinefieldWindow(object):
         self.window.mainloop()
 
     def show_opened_cells(self, opened_cells):
-        raise NotImplementedError()
+        for cell in opened_cells:
+            x, y, value = cell
+            if value == 0:
+                value = "  "
+            button = self.buttons[x][y]
+            color = get_color_by_value(value)
+            background = 'lightgrey'
+            button.configure(text=value, fg=color, bg=background)  # выводим в текст поля значение
 
 
 if __name__ == "__main__":
