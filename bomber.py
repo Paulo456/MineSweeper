@@ -189,10 +189,24 @@ def cheat(event):
 
 
 class MinefieldWindow(object):
-    def __init__(self):
+    def __init__(self, minefield):
+        self.minefield = minefield
+
         self.window = Tk()
         self.window.title('Сапер')
         self.window.resizable(False, False)  # запрещаем изменения размера
+
+        self.buttons = []
+        self.create_ui();
+
+    def create_ui(self):
+        for x in range(self.minefield.width):
+            buttons_row = []
+            for y in range(self.minefield.height):
+                button = Button(self.window, text='   ')
+                button.grid(column=x, row=y, ipadx=7, ipady=1)
+                buttons_row.append(button)
+            self.buttons.append(buttons_row)
 
     def run(self):
         self.window.mainloop()
@@ -213,7 +227,7 @@ def create_game_window(minefield):  # получаем значения
 
     # pole_array[0][0].button.bind('<Control-Button-1>', cheat)  # создаем комбинацию клавиш для быстрого решения
 
-    mineWindow = MinefieldWindow()
+    mineWindow = MinefieldWindow(minefield)
     mineWindow.run()
 
 
