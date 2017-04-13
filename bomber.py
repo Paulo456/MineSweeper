@@ -97,6 +97,10 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         if self.viewed:
             return
 
+        self.toggle_flag()
+        self.check_completition()
+
+    def toggle_flag(self):
         if self.flag == FLAG_NOT_SET:
             self.flag = FLAG_ADDED  # Ставим флаг
             self.button.configure(text='F', bg='yellow')  # Выводим флаг
@@ -108,8 +112,6 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         elif self.flag == FLAG_UNKNOWN:  # Если вопрос
             self.flag = FLAG_NOT_SET  # Устанавливаем на отсутствие флага
             self.button.configure(text='   ', bg='white')  # Выводим пустоту
-
-        self.check_completition()
 
     def check_completition(self):
         if sorted(mines) == sorted(flags) and mines != []:  # если массив флагов идентичен массиву мин
