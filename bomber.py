@@ -59,7 +59,7 @@ class Pole(object): #создаем Класс поля, наследуемся 
                 self.around.append([self.row+1,self.column-1])
                 self.around.append([self.row-1,self.column+1])
                 self.around.append([self.row-1,self.column-1])
-    
+
     def view(self,event):
         if mines == []: #При первом нажатии
             seter(0,self.around,self.row,self.column) #Устанавливаем мины
@@ -75,20 +75,20 @@ class Pole(object): #создаем Класс поля, наследуемся 
             self.clr = 'red'
         elif self.value == 4:
             self.clr = 'purple'
-        
+
         if self.mine and not self.viewed and not self.flag: #Если в клетке есть мина, она еще не открыта и на ней нет флага
             self.button.configure(text = 'B', bg = 'red') #Показываем пользователю, что тут есть мина
             self.viewed = True #Говорим, что клетка раскрыта
             for q in mines:
                 buttons[q[0]][q[1]].view('<Button-1>') #Я сейчас буду вскрывать ВСЕ мины
-            lose() #Вызываем окно проигрыша
-        
+            create_losing_window() #Вызываем окно проигрыша
+
         elif not self.viewed and not self.flag: #Если мины нет, клетка не открыта и флаг не стоит
             self.button.configure(text = self.value, fg = self.clr, bg = self.bg) #выводим в текст поля значение
             self.viewed = True
             if self.value == None: #Если вокруг нет мин
                 for k in self.around:
-                    buttons[k[0]][k[1]].view('<Button-1>') #Открываем все поля вокруг 
+                    buttons[k[0]][k[1]].view('<Button-1>') #Открываем все поля вокруг
     def setFlag(self,event):
         if self.flag == 0 and not self.viewed: #Если поле не открыто и флага нет
             self.flag = 1 #Ставим флаг
@@ -103,7 +103,8 @@ class Pole(object): #создаем Класс поля, наследуемся 
             self.button.configure(text = '   ', bg = 'white') #Выводим пустоту
         if sorted(mines) == sorted(flags) and mines != []: #если массив флагов идентичен массиву мин
             winer() #Сообщаем о победе
-def lose():
+
+def create_losing_window():
     losing_window = Tk()
     losing_window.title('Вы проиграли:-(')
     losing_window.geometry('300x100')
@@ -124,7 +125,7 @@ def seter(q, around,row,column): #Получаем массив полей во�
     b = choice(a) #Рандомное поле
     if [buttons.index(a),a.index(b)] not in mines and [buttons.index(a),a.index(b)] not in around and [buttons.index(a),a.index(b)] != [row,column]: #Проверяем, что выбранное поле не выбиралось до этого и, что не является полем на которую мы нажали (или окружающим ее полем)
         b.mine = True #Ставим мину
-        mines.append([buttons.index(a),a.index(b)]) #Добавляем ее в массив 
+        mines.append([buttons.index(a),a.index(b)]) #Добавляем ее в массив
         seter(q+1,around,row,column) #Вызываем установщик, сказав, что одна мина уже есть
     else:
         seter(q,around,row,column) #Вызываем установщик еще раз
@@ -142,8 +143,8 @@ def cheat(event):
             buttons[t[0]][t[1]].setFlag('<Button-1>')
 
 def game(high,lenght): #получаем значения
-    root = Tk() 
-    root.title('Сапер') 
+    root = Tk()
+    root.title('Сапер')
     global buttons
     global mines
     global flags
@@ -160,8 +161,8 @@ def game(high,lenght): #получаем значения
     root.resizable(False,False) #запрещаем изменения размера
     root.mainloop()
 
-def bombcounter(): 
-    global bombs 
+def bombcounter():
+    global bombs
     if mineText.get('1.0', END) == '\n': #Проверяем наличие текста
         bombs = 10 #Если текста нет, то по стандарту кол-во бомб - 10
     else:
