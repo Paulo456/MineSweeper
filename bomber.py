@@ -259,9 +259,7 @@ class MinefieldWindow(object):
 
         bombs = [i for i in opened_cells if i[2] == -1]
         if bombs:
-            win = create_losing_window()
-            win.protocol("WM_DELETE_WINDOW", lambda: self.close_modal_window(win))
-            win.mainloop()
+            self.show_final_window(create_losing_window)
 
     def right_button_clicked(self, event):
         x_str, y_str = event.widget.name.split("x")
@@ -287,17 +285,13 @@ class MinefieldWindow(object):
         flags_coords = [(i[0], i[1]) for i in self.minefield.flags]
 
         if sorted(self.minefield.mines) == sorted(flags_coords):
-            win = create_win_window()
-            win.protocol("WM_DELETE_WINDOW", lambda: self.close_modal_window(win))
-            win.mainloop()
+            self.show_final_window(create_win_window)
 
     def cheat_clicked(self, event):
         all_cells = self.minefield.show_all_cells()
         self.show_opened_cells(all_cells)
 
-        win = create_win_window()
-        win.protocol("WM_DELETE_WINDOW", lambda: self.close_modal_window(win))
-        win.mainloop()
+        self.show_final_window(create_win_window)
 
     def close_modal_window(self, window):
         window.destroy()
@@ -316,6 +310,11 @@ class MinefieldWindow(object):
             button = self.buttons[x][y]
             color, background = get_color_by_value(value)
             button.configure(text=value, fg=color, bg=background)  # выводим в текст поля значение
+
+    def show_final_window(self, window_fabric):
+        win = window_fabric()
+        win.protocol("WM_DELETE_WINDOW", lambda: self.close_modal_window(win))
+        win.mainloop()
 
 
 if __name__ == "__main__":
