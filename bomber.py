@@ -1,4 +1,4 @@
-from ui.main import StartWindow
+from ui.start_window import StartWindow
 
 if __name__ == "__main__":
     window = StartWindow()
