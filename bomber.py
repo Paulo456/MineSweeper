@@ -55,7 +55,7 @@ def create_losing_window():
     window.geometry('300x100')
     loseLabe = Label(window, text='В следующий раз повезет больше!')
     loseLabe.pack()
-    window.mainloop()
+    return window
 
 
 def create_win_window():
@@ -64,7 +64,7 @@ def create_win_window():
     window.title('Вы победили!')
     winLabe = Label(window, text='Поздравляем!')
     winLabe.pack()
-    window.mainloop()
+    return window
 
 
 class MainWindow(object):
@@ -259,8 +259,9 @@ class MinefieldWindow(object):
 
         bombs = [i for i in opened_cells if i[2] == -1]
         if bombs:
-            self.exit()
-            create_losing_window()
+            win = create_losing_window()
+            win.protocol("WM_DELETE_WINDOW", lambda: self.close_modal_window(win))
+            win.mainloop()
 
     def right_button_clicked(self, event):
         x_str, y_str = event.widget.name.split("x")
@@ -286,18 +287,24 @@ class MinefieldWindow(object):
         flags_coords = [(i[0], i[1]) for i in self.minefield.flags]
 
         if sorted(self.minefield.mines) == sorted(flags_coords):
-            self.exit()
-            create_win_window()
+            win = create_win_window()
+            win.protocol("WM_DELETE_WINDOW", lambda: self.close_modal_window(win))
+            win.mainloop()
 
     def cheat_clicked(self, event):
         all_cells = self.minefield.show_all_cells()
         self.show_opened_cells(all_cells)
 
+        win = create_win_window()
+        win.protocol("WM_DELETE_WINDOW", lambda: self.close_modal_window(win))
+        win.mainloop()
+
+    def close_modal_window(self, window):
+        window.destroy()
+        self.window.destroy()
+
     def run(self):
         self.window.mainloop()
-
-    def exit(self):
-        self.window.destroy()
 
     def show_opened_cells(self, opened_cells):
         for cell in opened_cells:
