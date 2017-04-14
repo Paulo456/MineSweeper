@@ -67,11 +67,6 @@ def create_win_window():
     window.mainloop()
 
 
-def cheat(event):
-    for t in mines:
-        pole_array[t[0]][t[1]].set_flag('<Button-1>')
-
-
 class MainWindow(object):
     def __init__(self):
         self.width = 9
@@ -283,7 +278,9 @@ class MinefieldWindow(object):
             create_win_window()
 
     def cheat_clicked(self, event):
-        print("Cheat is clicked")
+        mines = self.minefield.mines
+        opened_cells = [(i[0], i[1], -1) for i in mines]
+        self.show_opened_cells(opened_cells)
 
     def run(self):
         self.window.mainloop()
