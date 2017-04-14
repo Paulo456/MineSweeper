@@ -210,6 +210,18 @@ class Minefield(object):
 
         return flag
 
+    def show_all_cells(self):
+        result = []
+        for x, row in enumerate(self.fields):
+            for y, value in enumerate(row):
+                if value == None:
+                    if (x, y) in self.mines:
+                        value = -1
+                    else:
+                        value = self.nearest_mines_count(x, y)
+                result.append((x, y, value), )
+        return result
+
 
 class MinefieldWindow(object):
     def __init__(self, width, height, mines):
@@ -278,9 +290,8 @@ class MinefieldWindow(object):
             create_win_window()
 
     def cheat_clicked(self, event):
-        mines = self.minefield.mines
-        opened_cells = [(i[0], i[1], -1) for i in mines]
-        self.show_opened_cells(opened_cells)
+        all_cells = self.minefield.show_all_cells()
+        self.show_opened_cells(all_cells)
 
     def run(self):
         self.window.mainloop()
