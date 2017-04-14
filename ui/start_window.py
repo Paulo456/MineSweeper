@@ -47,7 +47,7 @@ class StartWindow(object):
     def run(self):
         self.window.mainloop()
 
-    def validate_input(self):
+    def validate_settings(self):
         if self.mine_input.get('1.0', END) != '\n':
             self.mines = int(self.mine_input.get('1.0', END))
 
@@ -58,6 +58,6 @@ class StartWindow(object):
             self.height = int(self.height_input.get('1.0', END))
 
     def start_game(self):
-        self.validate_input()
+        self.validate_settings()
         game_window = GameWindow(self.width, self.height, self.mines)
         game_window.run()
