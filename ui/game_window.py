@@ -6,17 +6,17 @@ from logic.minefield import Minefield
 
 def get_color_by_value(value):
     if value == const.CELL_WITH_MINE:
-        return ('red', 'red')
+        return 'red', 'red'
     if value == 0:
-        return ('yellow', 'lightgrey')
+        return 'yellow', 'lightgrey'
     if value == 1:
-        return ('green', 'lightgrey')
+        return 'green', 'lightgrey'
     if value == 2:
-        return ('blue', 'lightgrey')
+        return 'blue', 'lightgrey'
     if value == 3:
-        return ('red', 'lightgrey')
+        return 'red', 'lightgrey'
 
-    return ('purple', 'lightgrey')
+    return 'purple', 'lightgrey'
 
 
 class GameWindow(object):

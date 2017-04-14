@@ -56,16 +56,8 @@ class Minefield(object):
         else:
             self.create_mines(mines_paced)
 
-    def nearest_mines_count(self, x, y):
-        count = 0
-        for mine in self.mines:
-            if abs(mine[0] - x) < 2:
-                if abs(mine[1] - y) < 2:
-                    count += 1
-        return count
-
     def open_cells(self, x, y):
-        if self.fields[x][y] != None:
+        if self.fields[x][y] is not None:
             return []
 
         if (x, y) in self.mines:
@@ -80,13 +72,21 @@ class Minefield(object):
 
         untrimed_neighbors = get_all_neighbors(x, y)
         neighbors = [i for i in untrimed_neighbors if not is_outside(i, self.width, self.height)]
-        unvisited_neighbors = [i for i in neighbors if self.fields[i[0]][i[1]] == None]
+        unvisited_neighbors = [i for i in neighbors if self.fields[i[0]][i[1]] is None]
         for i in unvisited_neighbors:
             result.extend(self.open_cells(i[0], i[1]))
         return result
 
+    def nearest_mines_count(self, x, y):
+        count = 0
+        for mine in self.mines:
+            if abs(mine[0] - x) < 2:
+                if abs(mine[1] - y) < 2:
+                    count += 1
+        return count
+
     def loggle_flag(self, x, y):
-        if self.fields[x][y] != None:
+        if self.fields[x][y] is not None:
             return
 
         flag = next((flag for flag in self.flags if flag[0] == x and flag[1] == y), None)
@@ -111,7 +111,7 @@ class Minefield(object):
         result = []
         for x, row in enumerate(self.fields):
             for y, value in enumerate(row):
-                if value == None:
+                if value is None:
                     if (x, y) in self.mines:
                         value = const.CELL_WITH_MINE
                     else:
