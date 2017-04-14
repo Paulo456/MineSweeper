@@ -37,15 +37,14 @@ class Minefield(object):
         self.mines_count = mines_count
         self.mines = []
         self.flags = []
-
         self.fields = [[None, ] * width for i in range(height)]
 
         self.initialize_mines()
 
     def initialize_mines(self):
-        self.create_mines(0)
+        self.create_mines()
 
-    def create_mines(self, mines_paced):
+    def create_mines(self, mines_paced=0):
         if mines_paced == self.mines_count:
             return
 
