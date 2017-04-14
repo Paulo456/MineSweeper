@@ -71,12 +71,6 @@ class Pole(object):  # создаем Класс поля, наследуемс�
         self.check_completition()
 
 
-
-    def check_completition(self):
-        if sorted(self.minefield.mines) == sorted(self.minefield.flags):
-            create_win_window()
-
-
 def create_losing_window():
     window = Tk()
     window.title('Вы проиграли:-(')
@@ -225,9 +219,9 @@ class Minefield(object):
         if self.fields[x][y] != None:
             return
 
-        flag = next((flag for flag in self.flags if flag[0]==x and flag[1]==y), None)
+        flag = next((flag for flag in self.flags if flag[0] == x and flag[1] == y), None)
         if not flag:
-            flag = [x,y,FLAG_NOT_SET]
+            flag = [x, y, FLAG_NOT_SET]
             self.flags.append(flag)
 
         if flag[2] == FLAG_NOT_SET:
@@ -242,7 +236,6 @@ class Minefield(object):
         self.flags.remove(flag)
 
         return flag
-
 
 
 class MinefieldWindow(object):
@@ -287,7 +280,7 @@ class MinefieldWindow(object):
         x_str, y_str = event.widget.name.split("x")
         x = int(x_str)
         y = int(y_str)
-        flag = self.minefield.loggle_flag(x,y)
+        flag = self.minefield.loggle_flag(x, y)
 
         button = self.buttons[flag[0]][flag[1]]
 
@@ -302,6 +295,10 @@ class MinefieldWindow(object):
         if value == FLAG_NOT_SET:
             button.configure(text='   ', bg='white')
 
+        flags_coords = [(i[0], i[1]) for i in self.minefield.flags]
+
+        if sorted(self.minefield.mines) == sorted(flags_coords):
+            create_win_window()
 
     def cheat_clicked(self, event):
         print("Cheat is clicked")
