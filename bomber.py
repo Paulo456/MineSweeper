@@ -252,6 +252,7 @@ class MinefieldWindow(object):
 
         bombs = [i for i in opened_cells if i[2] == -1]
         if bombs:
+            self.exit()
             create_losing_window()
 
     def right_button_clicked(self, event):
@@ -278,6 +279,7 @@ class MinefieldWindow(object):
         flags_coords = [(i[0], i[1]) for i in self.minefield.flags]
 
         if sorted(self.minefield.mines) == sorted(flags_coords):
+            self.exit()
             create_win_window()
 
     def cheat_clicked(self, event):
@@ -285,6 +287,9 @@ class MinefieldWindow(object):
 
     def run(self):
         self.window.mainloop()
+
+    def exit(self):
+        self.window.destroy()
 
     def show_opened_cells(self, opened_cells):
         for cell in opened_cells:
