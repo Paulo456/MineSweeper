@@ -259,6 +259,8 @@ class MinefieldWindow(object):
         x = int(x_str)
         y = int(y_str)
         flag = self.minefield.loggle_flag(x, y)
+        if not flag:
+            return
 
         button = self.buttons[flag[0]][flag[1]]
 
