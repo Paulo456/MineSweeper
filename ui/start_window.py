@@ -48,14 +48,18 @@ class StartWindow(object):
         self.window.mainloop()
 
     def validate_settings(self):
-        if self.mine_input.get('1.0', END) != '\n':
-            self.mines = int(self.mine_input.get('1.0', END))
+        self.mines = self.validate_input(self.mine_input, 10)
+        self.width = self.validate_input(self.width_input, 9)
+        self.height = self.validate_input(self.height_input, 9)
 
-        if self.width_input.get('1.0', END) != '\n':
-            self.width = int(self.width_input.get('1.0', END))
+    def validate_input(self, input, default):
+        val = input.get('1.0', END)
+        trimmed_val = val.lstrip().rstrip()
+        if not trimmed_val:
+            return default
 
-        if self.height_input.get('1.0', END) != '\n':
-            self.height = int(self.height_input.get('1.0', END))
+        val = int(val)
+        return val
 
     def start_game(self):
         self.validate_settings()
