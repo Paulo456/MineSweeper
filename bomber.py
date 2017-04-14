@@ -49,28 +49,6 @@ def is_outside(pos, width, height):
     return False
 
 
-class Pole(object):  # создаем Класс поля, наследуемся от Object
-    def __init__(self, minefield, row, column):  # Инициализация поля. master - окно Tk().
-        # self.button = Button(master, text='   ')  # Создаем для нашего поля атрибут 'button'
-        self.mine = False  # Переменная наличия мины в поле
-        self.value = 0  # Кол-во мин вокруг
-        self.viewed = False  # Открыто/закрыто поле
-        self.flag = FLAG_NOT_SET
-        self.neighbors = []  # Массив, содержащий координаты соседних клеток
-        self.clr = 'black'  # Цвет текста
-        self.bg = None  # Цвет фона
-        self.row = row  # Строка
-        self.column = column  # Столбец
-        self.minefield = minefield
-
-    def set_flag(self, event):
-        if self.viewed:
-            return
-
-        self.toggle_flag()
-        self.check_completition()
-
-
 def create_losing_window():
     window = Tk()
     window.title('Вы проиграли:-(')
