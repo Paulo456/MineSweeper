@@ -28,7 +28,7 @@ class MinefieldWindow(object):
         self.window = Tk()
         self.window.geometry('%dx%d' % (width * self.BUTTON_SIZE, height * self.BUTTON_SIZE))
         self.window.title('Сапер')
-        self.window.resizable(False, False)  # запрещаем изменения размера
+        self.window.resizable(False, False)
 
         self.buttons = []
         self.create_ui()
@@ -48,8 +48,7 @@ class MinefieldWindow(object):
                 buttons_row.append(button)
             self.buttons.append(buttons_row)
 
-        self.buttons[0][0].bind('<Control-Button-1>',
-                                self.cheat_clicked)  # создаем комбинацию клавиш для быстрого решения
+        self.buttons[0][0].bind('<Control-Button-1>', self.cheat_clicked)
 
     def left_button_clicked(self, event):
         x_str, y_str = event.widget.name.split("x")
@@ -136,4 +135,4 @@ class MinefieldWindow(object):
                 value = "  "
 
             color, background = get_color_by_value(value)
-            button.configure(text=value, fg=color, bg=background)  # выводим в текст поля значение
+            button.configure(text=value, fg=color, bg=background)

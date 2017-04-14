@@ -10,8 +10,8 @@ class MainWindow(object):
         self.mines = 10
 
         self.window = Tk()
-        self.window.title('Настройки')  # Пишем название окна
-        self.window.geometry('200x150')  # Задаем размер
+        self.window.title('Настройки')
+        self.window.geometry('200x150')
 
         self.mineText = None
         self.highText = None
@@ -41,15 +41,15 @@ class MainWindow(object):
         lenghtLabe = Label(self.window, height=1, text='Высота:')
         lenghtLabe.place(x=5, y=55)
 
-        self.mineBut = Button(self.window, text='Начать:', command=self.start_game)  # Создаем кнопку
-        self.mineBut.place(x=70, y=90)  # Размещаем это все
+        self.mineBut = Button(self.window, text='Начать:', command=self.start_game)
+        self.mineBut.place(x=70, y=90)
 
     def run(self):
         self.window.mainloop()
 
     def validate_input(self):
-        if self.mineText.get('1.0', END) != '\n':  # Проверяем наличие текста
-            self.mines = int(self.mineText.get('1.0', END))  # Если текст есть, то это и будет кол-во бомб
+        if self.mineText.get('1.0', END) != '\n':
+            self.mines = int(self.mineText.get('1.0', END))
 
         if self.highText.get('1.0', END) != '\n':
             self.width = int(self.highText.get('1.0', END))
