@@ -3,7 +3,7 @@ from tkinter import Tk, Text, Label, Button, END
 from ui.minefield import MinefieldWindow
 
 
-class MainWindow(object):
+class StartWindow(object):
     def __init__(self):
         self.width = 9
         self.height = 9
