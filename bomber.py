@@ -127,10 +127,10 @@ class MainWindow(object):
 
 
 class Minefield(object):
-    def __init__(self, width, height, bombs_count):
+    def __init__(self, width, height, mines_count):
         self.width = width
         self.height = height
-        self.bombs_count = bombs_count
+        self.mines_count = mines_count
         self.mines = []
         self.flags = []
 
@@ -141,8 +141,8 @@ class Minefield(object):
     def initialize_mines(self):
         self.create_mines(0)
 
-    def create_mines(self, bombs_paced):
-        if bombs_paced == self.bombs_count:
+    def create_mines(self, mines_paced):
+        if mines_paced == self.mines_count:
             return
 
         rand_row = randint(0, self.width - 1)
@@ -150,13 +150,11 @@ class Minefield(object):
 
         rand_cell = (rand_row, rand_column)
 
-        # Проверяем, что выбранное поле не выбиралось до этого
         if rand_cell not in self.mines:
-            # b.mine = True  # Ставим мину
-            self.mines.append(rand_cell)  # Добавляем ее в массив
-            self.create_mines(bombs_paced + 1)  # Вызываем установщик, сказав, что одна мина уже есть
+            self.mines.append(rand_cell)
+            self.create_mines(mines_paced + 1)
         else:
-            self.create_mines(bombs_paced)  # Вызываем установщик еще раз
+            self.create_mines(mines_paced)
 
     def open_cells(self, x, y):
         return self.check_nearest_cells(x, y)
@@ -259,8 +257,8 @@ class MinefieldWindow(object):
         opened_cells = self.minefield.open_cells(x, y)
         self.show_opened_cells(opened_cells)
 
-        bombs = [i for i in opened_cells if i[2] == CELL_WITH_MINE]
-        if bombs:
+        mines = [i for i in opened_cells if i[2] == CELL_WITH_MINE]
+        if mines:
             self.show_final_window(create_losing_window)
 
     def right_button_clicked(self, event):
