@@ -37,7 +37,7 @@ class Minefield(object):
         self.mines_count = mines_count
         self.mines = []
         self.flags = []
-        self.fields = [[None, ] * width for i in range(height)]
+        self.fields = [[None, ] * height for i in range(width)]
 
         self.create_mines()
 
