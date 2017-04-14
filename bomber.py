@@ -51,24 +51,6 @@ def is_outside(pos, width, height):
     return False
 
 
-def create_losing_window():
-    window = Tk()
-    window.title('Вы проиграли:-(')
-    window.geometry('300x100')
-    loseLabe = Label(window, text='В следующий раз повезет больше!')
-    loseLabe.pack()
-    return window
-
-
-def create_win_window():
-    window = Tk()
-    window.geometry('300x100')
-    window.title('Вы победили!')
-    winLabe = Label(window, text='Поздравляем!')
-    winLabe.pack()
-    return window
-
-
 class MainWindow(object):
     def __init__(self):
         self.width = 9
@@ -224,10 +206,13 @@ class Minefield(object):
 
 
 class MinefieldWindow(object):
+    BUTTON_SIZE = 32
+
     def __init__(self, width, height, mines):
         self.minefield = Minefield(width, height, mines)
 
         self.window = Tk()
+        self.window.geometry('%dx%d' % (width * self.BUTTON_SIZE, height * self.BUTTON_SIZE))
         self.window.title('Сапер')
         self.window.resizable(False, False)  # запрещаем изменения размера
 
@@ -238,8 +223,11 @@ class MinefieldWindow(object):
         for x in range(self.minefield.width):
             buttons_row = []
             for y in range(self.minefield.height):
-                button = Button(self.window, text='   ')
-                button.grid(column=x, row=y, ipadx=7, ipady=1)
+                button = Button(self.window)
+                button.place(x=x * self.BUTTON_SIZE,
+                             y=y * self.BUTTON_SIZE,
+                             width=self.BUTTON_SIZE,
+                             height=self.BUTTON_SIZE)
                 button.bind('<Button-1>', self.left_button_clicked)
                 button.bind('<Button-3>', self.right_button_clicked)
                 button.name = "%dx%d" % (x, y)
@@ -259,7 +247,7 @@ class MinefieldWindow(object):
 
         mines = [i for i in opened_cells if i[2] == CELL_WITH_MINE]
         if mines:
-            self.show_final_window(create_losing_window)
+            self.show_fail_message()
 
     def right_button_clicked(self, event):
         x_str, y_str = event.widget.name.split("x")
@@ -285,36 +273,56 @@ class MinefieldWindow(object):
         flags_coords = [(i[0], i[1]) for i in self.minefield.flags]
 
         if sorted(self.minefield.mines) == sorted(flags_coords):
-            self.show_final_window(create_win_window)
+            self.show_success_message()
 
     def cheat_clicked(self, event):
         all_cells = self.minefield.show_all_cells()
         self.show_opened_cells(all_cells)
+        self.show_success_message()
 
-        self.show_final_window(create_win_window)
+    def show_fail_message(self):
+        frame_width = 200
+        frame_height = 90
+        frame = Frame(self.window, width=frame_width, height=frame_height, bg='indian red')
+        width = self.window.winfo_width()
+        height = self.window.winfo_height()
+        frame.place(x=(width - frame_width) // 2, y=(height - frame_height) // 2.3)
+        caption = Label(frame, text='Вы проиграли', font=("Arial", 18), bg='indian red')
+        caption.place(x=20, y=5)
+        message = Label(frame, text="В следующий раз вам повезёт больше!",
+                        font=("Arial", 12), justify="left",
+                        wraplength=frame_width, bg='indian red')
+        message.place(x=10, y=40)
 
-    def close_modal_window(self, window):
-        window.destroy()
-        self.window.destroy()
+    def show_success_message(self):
+        frame_width = 200
+        frame_height = 80
+        frame = Frame(self.window, width=frame_width, height=frame_height, bg="forest green")
+        width = self.window.winfo_width()
+        height = self.window.winfo_height()
+        frame.place(x=(width - frame_width) // 2, y=(height - frame_height) // 2.3)
+        caption = Label(frame, text='Поздравляем', font=("Arial", 18), bg="forest green")
+        caption.place(x=20, y=5)
+        message = Label(frame, text="Вы выйграли!", font=("Arial", 14), bg="forest green")
+        message.place(x=35, y=40)
 
     def run(self):
         self.window.mainloop()
 
     def show_opened_cells(self, opened_cells):
+
         for cell in opened_cells:
             x, y, value = cell
+            button = self.buttons[x][y]
+
             if value == CELL_WITH_MINE:
-                value = "Ṓ"
+                value = "M"
+                button.configure(font=("Wingdings", 20))
             if value == 0:
                 value = "  "
-            button = self.buttons[x][y]
+
             color, background = get_color_by_value(value)
             button.configure(text=value, fg=color, bg=background)  # выводим в текст поля значение
-
-    def show_final_window(self, window_fabric):
-        win = window_fabric()
-        win.protocol("WM_DELETE_WINDOW", lambda: self.close_modal_window(win))
-        win.mainloop()
 
 
 if __name__ == "__main__":
