@@ -56,9 +56,6 @@ class Minefield(object):
         else:
             self.create_mines(mines_paced)
 
-    def open_cells(self, x, y):
-        return self.check_nearest_cells(x, y)
-
     def nearest_mines_count(self, x, y):
         count = 0
         for mine in self.mines:
@@ -67,7 +64,7 @@ class Minefield(object):
                     count += 1
         return count
 
-    def check_nearest_cells(self, x, y):
+    def open_cells(self, x, y):
         if self.fields[x][y] != None:
             return []
 
@@ -85,7 +82,7 @@ class Minefield(object):
         neighbors = [i for i in untrimed_neighbors if not is_outside(i, self.width, self.height)]
         unvisited_neighbors = [i for i in neighbors if self.fields[i[0]][i[1]] == None]
         for i in unvisited_neighbors:
-            result.extend(self.check_nearest_cells(i[0], i[1]))
+            result.extend(self.open_cells(i[0], i[1]))
         return result
 
     def loggle_flag(self, x, y):
