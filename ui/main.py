@@ -21,18 +21,21 @@ class MainWindow(object):
 
     def create_ui(self):
         self.mineText = Text(self.window, width=5, height=1)  # Создаем поля для ввода текста и пояснения
+        self.mineText.insert(END, self.mines)
         self.mineText.place(x=75, y=5)
 
         mineLabe = Label(self.window, height=1, text='Бомбы:')
         mineLabe.place(x=5, y=5)
 
         self.highText = Text(self.window, width=5, height=1)
+        self.highText.insert(END, self.width)
         self.highText.place(x=75, y=30)
 
         highLabe = Label(self.window, height=1, text='Ширина:')
         highLabe.place(x=5, y=30)
 
         self.lenghtText = Text(self.window, width=5, height=1)
+        self.lenghtText.insert(END, self.height)
         self.lenghtText.place(x=75, y=55)
 
         lenghtLabe = Label(self.window, height=1, text='Высота:')
