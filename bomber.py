@@ -5,9 +5,11 @@ FLAG_NOT_SET = 0
 FLAG_ADDED = 1
 FLAG_UNKNOWN = 2
 
+CELL_WITH_MINE = -1
+
 
 def get_color_by_value(value):
-    if value == -1:
+    if value == CELL_WITH_MINE:
         return ('red', 'red')
     if value == 0:
         return ('yellow', 'lightgrey')
@@ -172,7 +174,7 @@ class Minefield(object):
             return []
 
         if (x, y) in self.mines:
-            value = -1
+            value = CELL_WITH_MINE
         else:
             value = self.nearest_mines_count(x, y)
 
@@ -216,7 +218,7 @@ class Minefield(object):
             for y, value in enumerate(row):
                 if value == None:
                     if (x, y) in self.mines:
-                        value = -1
+                        value = CELL_WITH_MINE
                     else:
                         value = self.nearest_mines_count(x, y)
                 result.append((x, y, value), )
@@ -257,7 +259,7 @@ class MinefieldWindow(object):
         opened_cells = self.minefield.open_cells(x, y)
         self.show_opened_cells(opened_cells)
 
-        bombs = [i for i in opened_cells if i[2] == -1]
+        bombs = [i for i in opened_cells if i[2] == CELL_WITH_MINE]
         if bombs:
             self.show_final_window(create_losing_window)
 
@@ -303,7 +305,7 @@ class MinefieldWindow(object):
     def show_opened_cells(self, opened_cells):
         for cell in opened_cells:
             x, y, value = cell
-            if value == -1:
+            if value == CELL_WITH_MINE:
                 value = "Ṓ"
             if value == 0:
                 value = "  "
