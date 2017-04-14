@@ -51,33 +51,26 @@ class GameWindow(object):
         self.buttons[0][0].bind('<Control-Button-1>', self.cheat_clicked)
 
     def left_button_clicked(self, event):
-        if self.minefield.gamestate is not const.GAME_STATE_PLAY:
-            return
-
         x_str, y_str = event.widget.name.split("x")
         x = int(x_str)
         y = int(y_str)
 
-        opened_cells = self.minefield.open_cells(x, y)
+        opened_cells = self.minefield.open_cell(x, y)
         self.show_opened_cells(opened_cells)
 
-        self.minefield.update_state(opened_cells)
         if self.minefield.gamestate is const.GAME_STATE_LOST:
             self.show_fail_message()
 
     def right_button_clicked(self, event):
-        if self.minefield.gamestate is not const.GAME_STATE_PLAY:
-            return
-
         x_str, y_str = event.widget.name.split("x")
         x = int(x_str)
         y = int(y_str)
+
         flag = self.minefield.loggle_flag(x, y)
         if not flag:
             return
 
         button = self.buttons[flag[0]][flag[1]]
-
         value = flag[2]
 
         if value == const.FLAG_ADDED:
@@ -98,7 +91,7 @@ class GameWindow(object):
         all_cells = self.minefield.show_all_cells()
         self.show_opened_cells(all_cells)
 
-        self.minefield.update_state()
+        self.minefield.gamestate = const.GAME_STATE_WIN
         self.show_success_message()
 
     def show_fail_message(self):
@@ -131,7 +124,6 @@ class GameWindow(object):
         self.window.mainloop()
 
     def show_opened_cells(self, opened_cells):
-
         for cell in opened_cells:
             x, y, value = cell
             button = self.buttons[x][y]

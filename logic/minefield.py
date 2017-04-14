@@ -87,6 +87,9 @@ class Minefield(object):
         return count
 
     def loggle_flag(self, x, y):
+        if self.gamestate is not const.GAME_STATE_PLAY:
+            return
+
         if self.fields[x][y] is not None:
             return
 
@@ -132,3 +135,11 @@ class Minefield(object):
         if sorted(self.mines) == sorted(flags_coords):
             self.gamestate = const.GAME_STATE_WIN
         return
+
+    def open_cell(self, x, y):
+        if self.gamestate is not const.GAME_STATE_PLAY:
+            return []
+
+        res = self.open_cells(x, y)
+        self.update_state(res)
+        return res
