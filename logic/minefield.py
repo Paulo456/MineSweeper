@@ -38,6 +38,7 @@ class Minefield(object):
         self.mines = []
         self.flags = []
         self.fields = [[None, ] * height for i in range(width)]
+        self.gamestate = const.GAME_STATE_PLAY
 
         self.create_mines()
 
@@ -118,3 +119,18 @@ class Minefield(object):
                         value = self.nearest_mines_count(x, y)
                 result.append((x, y, value), )
         return result
+
+    def is_game_ended(self, opened_cells=None):
+        if opened_cells:
+            mines = [i for i in opened_cells if i[2] == const.CELL_WITH_MINE]
+            if mines:
+                self.gamestate = const.GAME_STATE_LOST
+                return self.gamestate
+
+        flags_coords = [(i[0], i[1]) for i in self.flags]
+
+        if sorted(self.mines) == sorted(flags_coords):
+            self.gamestate = const.GAME_STATE_WIN
+            return self.gamestate
+
+        return self.gamestate

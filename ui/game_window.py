@@ -58,8 +58,7 @@ class GameWindow(object):
         opened_cells = self.minefield.open_cells(x, y)
         self.show_opened_cells(opened_cells)
 
-        mines = [i for i in opened_cells if i[2] == const.CELL_WITH_MINE]
-        if mines:
+        if self.minefield.is_game_ended(opened_cells) is const.GAME_STATE_LOST:
             self.show_fail_message()
 
     def right_button_clicked(self, event):
@@ -83,14 +82,14 @@ class GameWindow(object):
         if value == const.FLAG_NOT_SET:
             button.configure(text='   ', bg='white')
 
-        flags_coords = [(i[0], i[1]) for i in self.minefield.flags]
-
-        if sorted(self.minefield.mines) == sorted(flags_coords):
+        if self.minefield.is_game_ended() is const.GAME_STATE_WIN:
             self.show_success_message()
 
     def cheat_clicked(self, event):
         all_cells = self.minefield.show_all_cells()
         self.show_opened_cells(all_cells)
+        if self.minefield.is_game_ended() is const.GAME_STATE_WIN:
+            self.show_success_message()
         self.show_success_message()
 
     def show_fail_message(self):
