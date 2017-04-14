@@ -120,17 +120,15 @@ class Minefield(object):
                 result.append((x, y, value), )
         return result
 
-    def is_game_ended(self, opened_cells=None):
+    def update_state(self, opened_cells=None):
         if opened_cells:
             mines = [i for i in opened_cells if i[2] == const.CELL_WITH_MINE]
             if mines:
                 self.gamestate = const.GAME_STATE_LOST
-                return self.gamestate
+                return
 
         flags_coords = [(i[0], i[1]) for i in self.flags]
 
         if sorted(self.mines) == sorted(flags_coords):
             self.gamestate = const.GAME_STATE_WIN
-            return self.gamestate
-
-        return self.gamestate
+        return

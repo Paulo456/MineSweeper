@@ -51,6 +51,9 @@ class GameWindow(object):
         self.buttons[0][0].bind('<Control-Button-1>', self.cheat_clicked)
 
     def left_button_clicked(self, event):
+        if self.minefield.gamestate is not const.GAME_STATE_PLAY:
+            return
+
         x_str, y_str = event.widget.name.split("x")
         x = int(x_str)
         y = int(y_str)
@@ -58,10 +61,14 @@ class GameWindow(object):
         opened_cells = self.minefield.open_cells(x, y)
         self.show_opened_cells(opened_cells)
 
-        if self.minefield.is_game_ended(opened_cells) is const.GAME_STATE_LOST:
+        self.minefield.update_state(opened_cells)
+        if self.minefield.gamestate is const.GAME_STATE_LOST:
             self.show_fail_message()
 
     def right_button_clicked(self, event):
+        if self.minefield.gamestate is not const.GAME_STATE_PLAY:
+            return
+
         x_str, y_str = event.widget.name.split("x")
         x = int(x_str)
         y = int(y_str)
@@ -82,14 +89,16 @@ class GameWindow(object):
         if value == const.FLAG_NOT_SET:
             button.configure(text='   ', bg='white')
 
-        if self.minefield.is_game_ended() is const.GAME_STATE_WIN:
+        self.minefield.update_state()
+
+        if self.minefield.gamestate is const.GAME_STATE_WIN:
             self.show_success_message()
 
     def cheat_clicked(self, event):
         all_cells = self.minefield.show_all_cells()
         self.show_opened_cells(all_cells)
-        if self.minefield.is_game_ended() is const.GAME_STATE_WIN:
-            self.show_success_message()
+
+        self.minefield.update_state()
         self.show_success_message()
 
     def show_fail_message(self):
