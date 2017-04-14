@@ -6,17 +6,17 @@ from logic.minefield import Minefield
 
 def get_color_by_value(value):
     if value == const.CELL_WITH_MINE:
-        return 'red', 'red'
+        return 'white', 'brown'
     if value == 0:
         return 'yellow', 'lightgrey'
     if value == 1:
-        return 'green', 'lightgrey'
+        return 'green', 'beige'
     if value == 2:
-        return 'blue', 'lightgrey'
+        return 'blue', 'beige'
     if value == 3:
-        return 'red', 'lightgrey'
+        return 'red', 'beige'
 
-    return 'purple', 'lightgrey'
+    return 'purple', 'beige'
 
 
 class GameWindow(object):
@@ -76,13 +76,15 @@ class GameWindow(object):
         value = flag[2]
 
         if value == const.FLAG_ADDED:
-            button.configure(text='F', bg='yellow')
+            button.configure(text='O', bg='yellow', fg='black',font=('Wingdings', 20))
 
         if value == const.FLAG_UNKNOWN:
-            button.configure(text='?', bg='blue')
+            button.configure(text='?', bg='blue',
+                             fg='white',
+                             font=('Arial', 20))
 
         if value == const.FLAG_NOT_SET:
-            button.configure(text='   ', bg='white')
+            button.configure(text='', bg='white', font=('Arial', 14))
 
         self.minefield.update_state()
 
@@ -130,11 +132,16 @@ class GameWindow(object):
             x, y, value = cell
             button = self.buttons[x][y]
 
-            if value == const.CELL_WITH_MINE:
-                value = "M"
-                button.configure(font=("Wingdings", 20))
-            if value == 0:
-                value = "  "
+            self.configure_button(button, value)
 
-            color, background = get_color_by_value(value)
-            button.configure(text=value, fg=color, bg=background)
+    def configure_button(self, button, value):
+        color, background = get_color_by_value(value)
+        text = value
+        font = ("Arial", 12)
+        if value == const.CELL_WITH_MINE:
+            text = "M"
+            font=("Wingdings", 20)
+        if value == 0:
+            text = ""
+
+        button.configure(text=text, fg=color, bg=background, font=font)
