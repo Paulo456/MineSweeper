@@ -1,6 +1,6 @@
 from tkinter import Tk, Text, Label, Button, END
 
-from ui.minefield import GameWindow
+from ui.game_window import GameWindow
 
 
 class StartWindow(object):
