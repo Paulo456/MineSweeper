@@ -19,7 +19,7 @@ def get_color_by_value(value):
     return ('purple', 'lightgrey')
 
 
-class MinefieldWindow(object):
+class GameWindow(object):
     BUTTON_SIZE = 32
 
     def __init__(self, width, height, mines):

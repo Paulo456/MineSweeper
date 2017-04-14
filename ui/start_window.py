@@ -1,6 +1,6 @@
 from tkinter import Tk, Text, Label, Button, END
 
-from ui.minefield import MinefieldWindow
+from ui.minefield import GameWindow
 
 
 class StartWindow(object):
@@ -59,5 +59,5 @@ class StartWindow(object):
 
     def start_game(self):
         self.validate_input()
-        mineWindow = MinefieldWindow(self.width, self.height, self.mines)
+        mineWindow = GameWindow(self.width, self.height, self.mines)
         mineWindow.run()
