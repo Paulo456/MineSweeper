@@ -39,9 +39,6 @@ class Minefield(object):
         self.flags = []
         self.fields = [[None, ] * width for i in range(height)]
 
-        self.initialize_mines()
-
-    def initialize_mines(self):
         self.create_mines()
 
     def create_mines(self, mines_paced=0):
